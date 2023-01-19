@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "stamps-domik": {
+      "hosting": {
+        "Francobolli": [
+          "stamps-domik"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "stamps-domik"
+  }
+}

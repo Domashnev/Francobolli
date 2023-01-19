@@ -1,4 +1,32 @@
-<dx-tile-view class="dx-tile-content"
+
+<dx-gallery
+  [dataSource]="francobolli"
+  [showNavButtons]="true"
+  [hoverStateEnabled]="true"
+  [stretchImages]="false"
+  [height]="200"
+  [width]="'80%'"
+  [initialItemWidth]="100"
+  (onItemClick)="showGallery($event.itemIndex)">
+</dx-gallery>
+
+<dx-data-grid [dataSource]="importFranco" [showRowLines]="true" [columnAutoWidth]="true" dateSerializationFormat="">
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-selection mode="single"></dxo-selection>
+
+  <dxi-column dataField="author" caption="Автор" dataType="string"></dxi-column>
+  <dxi-column dataField="description" caption="Описание" dataType="string"></dxi-column>
+  <dxi-column dataField="issueYear" caption="Год выпуска" dataType="number" ></dxi-column>
+  <dxi-column dataField="issuedCountry" caption="Страна выпуска" dataType="string"></dxi-column>
+  <dxi-column dataField="cost" caption="Цена" dataType="string"></dxi-column>
+  <dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column>
+  <dxi-column dataField="regNum" caption="Артикль" dataType="string"></dxi-column>
+  <dxi-column dataField="regNum2" caption="Артикль2" dataType="string"></dxi-column>
+</dx-data-grid>
+
+
+<!--dx-tile-view class="dx-tile-content"
               [baseItemHeight]="200"
               [baseItemWidth]="150"
               [itemMargin]="10"
@@ -15,15 +43,4 @@
     ></div>
   </dxi-item>
 
-</dx-tile-view>
-
-<dx-gallery
-  [dataSource]="francobolli"
-  [showNavButtons]="true"
-  [hoverStateEnabled]="true"
-  [stretchImages]="false"
-  [height]="200"
-  [width]="'80%'"
-  [initialItemWidth]="100"
-  (onItemClick)="showGallery($event.itemIndex)">
-</dx-gallery>
+</dx-tile-view-->
