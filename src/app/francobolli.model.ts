@@ -1,56 +1,28 @@
-export interface Francobolli {
+export class Francobolli {
   imageSrc: string;
   author: string;
   issueYear: number;
   issuedCountry: string;
+
   value?: number;
-  cost?: number|string;
+  cost?: number | string;
   currency?: string;
   valueRub?: number;
   widthRatio?: number;
   heightRatio?: number;
+
   description?: string;
-  purchaseDate?: Date;
+  purchaseDate?: string;
+
+  constructor(imageSrc: string) {
+    this.imageSrc = imageSrc
+    this.author = ''
+    this.issueYear= 1900
+    this.issuedCountry= ''
+  }
 }
 
-
-
-export const testFranco = [
-  {
-    imageSrc: 'assets/page4/4-блок1.jpg',
-    author: 'Блок',
-    issuedCountry: 'СССР',
-    issueYear: 1956,
-  },
-  {
-    imageSrc: 'assets/page4/4-блок2.jpg',
-    author: 'Блок',
-    issuedCountry: 'СССР',
-    issueYear: 1980,
-  },
-  {
-    imageSrc: 'assets/page4/4-маяк1.jpg',
-    author: 'Маяковский',
-    issuedCountry: 'СССР',
-    issueYear: 1940,
-  },
-  {
-    imageSrc: 'assets/page4/4-пастернак.jpg',
-    author: 'Пастернак',
-    issuedCountry: 'СССР',
-    issueYear: 1990,
-    widthRatio: 2,
-    heightRatio: 2,
-  },
-  {
-    imageSrc: 'assets/page4/4-брюсов1.jpg',
-    author: 'Брюсов',
-    issuedCountry: 'СССР',
-    issueYear: 1963,
-  },
-  {
-    imageSrc: 'assets/page4/4-брюсов2.jpg',
-    author: 'Брюсов',
-    issuedCountry: 'Армения',
-    issueYear: 2011,
-  }]
+export interface AssetsImageList {
+  folder: string;
+  images: string[];
+}

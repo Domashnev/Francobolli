@@ -1,0 +1,35 @@
+[
+  {
+  "folder": "page1-2",
+  "images": ["1-л1.png","1-л5.jpg","1-п2.jpg","1-п6.jpg","2-г1.png","2-д1.jpg","2-с1.jpg",
+    "1-л2.jpg","1-л6.jpg","1-п3.jpg","1-п7.jpg","2-г2.jpg","2-д2.jpg","2-с2.jpg",
+    "1-л3.jpg","1-л7.jpg","1-п4.jpg","1-п8.jpg","2-гриб1.jpg","2-д3.jpg","2-с3.jpg",
+    "1-л4.jpg","1-п1.jpg","1-п5.jpg","2-б1.jpg","2-гриб3.jpg","2-л1.jpg"]
+  },
+  {
+    "folder": "page3",
+    "images": [
+  "3-100.jpg","3-dunbar.jpg","3-lainer.jpg","3-rilke.jpg","3-thoreau.jpg",
+  "3-102.jpg","3-frost.jpg","3-lee.jpg","3-scott.jpg","3-пиран1.jpg",
+  "3-b1.jpg","3-gray.jpg","3-london.jpg","3-sh1.jpg","3-по1.jpg",
+  "3-b2.jpg","3-henry.jpg","3-mann.jpg","3-sh2.jpg","3-стейн.jpg",
+  "3-d1.jpg","3-hesse.jpg","3-o1.jpg"," 3-sh3.jpg","3-фолк1.jpg",
+  "3-d2.jpg","3-kits.jpg","3-petrarka1.jpg","3-shil1.jpg",
+  "3-dik1.png","3-l1.jpg","3-petrarka2.jpg","3-shil2.png"]
+  },
+  {
+    "folder": "page4",
+    "images": [
+      "4-блок1.jpg","4-есенин3.jpg","4-маяк3.jpg","4-пастернак.jpg",
+      "4-блок2.jpg","4-крылов1.jpg","4-маяк4.jpg","4-толстой1.jpg",
+      "4-брюсов1.jpg","4-крылов2.jpg","4-маяк5.jpg","4-толстой2.jpg",
+      "4-брюсов2.jpg","4-крылов3.jpg","4-маяк6.jpg","4-чехов1.jpg",
+      "4-есенин1.jpg","4-маяк1.jpg","4-маяк7.jpg","4-чехов2.jpg",
+      "4-есенин2.jpg","4-маяк2.jpg","4-маяк8.jpg","4.jpg"]
+  },
+  {
+    "folder": "page5",
+    "images": [
+    ]
+  }
+]

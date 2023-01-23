@@ -1,5 +1,5 @@
 
-<dx-gallery
+<!--dx-gallery
   [dataSource]="francobolli"
   [showNavButtons]="true"
   [hoverStateEnabled]="true"
@@ -8,39 +8,45 @@
   [width]="'80%'"
   [initialItemWidth]="100"
   (onItemClick)="showGallery($event.itemIndex)">
-</dx-gallery>
+</dx-gallery-->
 
-<dx-data-grid [dataSource]="importFranco" [showRowLines]="true" [columnAutoWidth]="true" dateSerializationFormat="">
-  <dxo-header-filter [visible]="true"></dxo-header-filter>
-  <dxo-filter-row [visible]="true"></dxo-filter-row>
-  <dxo-selection mode="single"></dxo-selection>
+<dx-tabs [items]="folders" (onItemClick)="changeFolder($event.itemData)"></dx-tabs>
 
-  <dxi-column dataField="author" caption="Автор" dataType="string"></dxi-column>
-  <dxi-column dataField="description" caption="Описание" dataType="string"></dxi-column>
-  <dxi-column dataField="issueYear" caption="Год выпуска" dataType="number" ></dxi-column>
-  <dxi-column dataField="issuedCountry" caption="Страна выпуска" dataType="string"></dxi-column>
-  <dxi-column dataField="cost" caption="Цена" dataType="string"></dxi-column>
-  <dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column>
-  <dxi-column dataField="regNum" caption="Артикль" dataType="string"></dxi-column>
-  <dxi-column dataField="regNum2" caption="Артикль2" dataType="string"></dxi-column>
-</dx-data-grid>
+<div style="display: grid; grid-template-columns: 200px 1fr">
 
+  <dx-tile-view class="dx-tile-content"
+                width="100%" height="95vh" direction="vertical"
+                [baseItemHeight]="200" [baseItemWidth]="150" [itemMargin]="5">
+    <!--             [widthRatio]="francobollo.widthRatio"
+              [heightRatio]="francobollo.heightRatio"-->
+    <dxi-item *ngFor="let imgSrc of galleryProperties.images; let imgIndex=index">
+      <div class="image"
+        [style.background-image]="'url(' + imgSrc.path + ')'"
+        (click)="showGallery(imgIndex)"
+      ></div>
+    </dxi-item>
 
-<!--dx-tile-view class="dx-tile-content"
-              [baseItemHeight]="200"
-              [baseItemWidth]="150"
-              [itemMargin]="10"
-              direction="vertical">
+  </dx-tile-view>
 
-  <dxi-item *ngFor="let francobollo of francobolli; let imgIndex=index"
-    [widthRatio]="francobollo.widthRatio"
-    [heightRatio]="francobollo.heightRatio"
-  >
-    <div
-      class="image"
-      [style.background-image]="'url(' + francobollo.imageSrc + ')'"
-      (click)="showGallery(imgIndex)"
-    ></div>
-  </dxi-item>
+  <div style="display: flex; flex-direction: column">
+    <div style="display: flex">
+      <img [src]="newCatalogItem.imageSrc" width="400">
+      <dx-form width="30%" [formData]="newCatalogItem"></dx-form>
+    </div>
 
-</dx-tile-view-->
+      <dx-data-grid [dataSource]="importFranco" [showRowLines]="true" [columnAutoWidth]="true" dateSerializationFormat="">
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-selection mode="single"></dxo-selection>
+
+        <dxi-column dataField="author" caption="Автор" dataType="string"></dxi-column>
+        <dxi-column dataField="description" caption="Описание" dataType="string"></dxi-column>
+        <dxi-column dataField="issueYear" caption="Год выпуска" dataType="number" ></dxi-column>
+        <dxi-column dataField="issuedCountry" caption="Страна выпуска" dataType="string"></dxi-column>
+        <dxi-column dataField="cost" caption="Цена" dataType="string"></dxi-column>
+        <dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column>
+        <dxi-column dataField="regNum" caption="Артикль" dataType="string"></dxi-column>
+        <dxi-column dataField="regNum2" caption="Артикль2" dataType="string"></dxi-column>
+      </dx-data-grid>
+  </div>
+</div>

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import {Francobolli, testFranco} from './francobolli.model';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
@@ -12,7 +11,7 @@ export class FrancobolliService {
     return this.http.get(pathToJson)
   }
 
-  getFrancobolli(): Francobolli[] {
-    return testFranco
+  getAssetsImageList(): Observable<any> {
+    return this.http.get("assets/imageList.json")
   }
 }
