@@ -3,6 +3,7 @@ export class Francobolli {
   author: string;
   issueYear: number;
   issuedCountry: string;
+  description: string;
 
   value?: number;
   cost?: number | string;
@@ -11,7 +12,6 @@ export class Francobolli {
   widthRatio?: number;
   heightRatio?: number;
 
-  description?: string;
   purchaseDate?: string;
 
   constructor(imageSrc: string) {
@@ -19,6 +19,7 @@ export class Francobolli {
     this.author = ''
     this.issueYear= 1900
     this.issuedCountry= ''
+    this.description = ''
   }
 }
 

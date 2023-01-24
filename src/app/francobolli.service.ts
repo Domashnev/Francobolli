@@ -4,6 +4,8 @@ import {Observable} from "rxjs";
 
 @Injectable()
 export class FrancobolliService {
+  countries: string[] = []
+  authors: string[] = []
 
   constructor(private http: HttpClient) { }
 
@@ -13,5 +15,13 @@ export class FrancobolliService {
 
   getAssetsImageList(): Observable<any> {
     return this.http.get("assets/imageList.json")
+  }
+
+  getAuthors(): string[] {
+    return this.authors
+  }
+
+  getCountries(): string[] {
+    return this.countries
   }
 }

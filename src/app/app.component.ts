@@ -1,9 +1,10 @@
-import { Component  } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FrancobolliService } from './francobolli.service';
 import {AssetsImageList, Francobolli} from './francobolli.model';
 import { Gallery } from 'angular-gallery';
 import { catchError } from 'rxjs';
 import { FirebaseService } from './firebase.service';
+import { DxDataGridComponent } from 'devextreme-angular';
 
 @Component({
   selector: 'app-root',
@@ -12,16 +13,16 @@ import { FirebaseService } from './firebase.service';
 })
 
 export class AppComponent {
+  @ViewChild('importGrid') grid: DxDataGridComponent;
+
   title = 'Francobolli';
   galleryProperties: any = {}
 
   importFranco: Francobolli[] = []
   assetsImageList: AssetsImageList[] = []
   folders: string[]= []
-  currentFolderImages : string[] = []
-  currentFolderName: string = ""
 
-  newCatalogItem: Francobolli = new Francobolli('')
+  catalogItem: Francobolli = new Francobolli('')
 
   constructor(private francobolliService: FrancobolliService,
               private firebaseService: FirebaseService,
@@ -29,6 +30,14 @@ export class AppComponent {
 
     this.firebaseService.getImportStamps().subscribe(data => {
       this.importFranco = data.data().import
+      const authorSet = new Set<string>()
+      const countriesSet = new Set<string>()
+      this.importFranco.forEach(f => {
+        authorSet.add(f.author)
+        countriesSet.add(f.issuedCountry)
+      })
+      this.francobolliService.authors = Array.from(authorSet).sort()
+      this.francobolliService.countries = Array.from(countriesSet).sort()
     })
 
     this.francobolliService.getAssetsImageList().subscribe( imgList => {
@@ -42,9 +51,7 @@ export class AppComponent {
   changeFolder(folderName: string): void {
     const newFold = this.assetsImageList.find(item => item.folder === folderName)
     if( newFold ) {
-      this.currentFolderName = folderName
-      this.currentFolderImages = newFold.images
-      this.galleryProperties.images = this.currentFolderImages
+      this.galleryProperties.images = newFold.images
         .map(f => { return { path: 'assets/' + folderName + '/' +f } } )
     }
   }
@@ -55,7 +62,7 @@ export class AppComponent {
   }
 
   editFrancobollo(index: number) {
-
+    this.catalogItem.imageSrc = this.galleryProperties.images[index].path
   }
 
   importJSON(path: string): void {
@@ -74,6 +81,20 @@ export class AppComponent {
 
   saveFrancobolli(): void {
     this.firebaseService.updateJsonToFirebase('stamps', 'import', this.importFranco).then(() => alert('Updated'))
+  }
+
+  updateCatalogItem(event: any) {
+    if( event.rowType === 'data') {
+        this.catalogItem = event.data
+    }
+  }
+
+  setAuthorFilter(author: string): void {
+    if(!author){
+      this.grid.instance.clearFilter()
+    } else {
+      this.grid.instance.filter([['author', 'contains', author], 'or', ['description', 'contains', author]])
+    }
   }
 
 }

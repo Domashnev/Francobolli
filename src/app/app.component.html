@@ -12,29 +12,28 @@
 
 <dx-tabs [items]="folders" (onItemClick)="changeFolder($event.itemData)"></dx-tabs>
 
-<div style="display: grid; grid-template-columns: 200px 1fr">
+<div style="display: grid; grid-template-columns: 120px 1fr">
 
   <dx-tile-view class="dx-tile-content"
                 width="100%" height="95vh" direction="vertical"
-                [baseItemHeight]="200" [baseItemWidth]="150" [itemMargin]="5">
+                showScrollbar="onHover"
+                [baseItemHeight]="150" [baseItemWidth]="100" [itemMargin]="5">
     <!--             [widthRatio]="francobollo.widthRatio"
               [heightRatio]="francobollo.heightRatio"-->
     <dxi-item *ngFor="let imgSrc of galleryProperties.images; let imgIndex=index">
       <div class="image"
         [style.background-image]="'url(' + imgSrc.path + ')'"
-        (click)="showGallery(imgIndex)"
+        (click)="editFrancobollo(imgIndex)"
       ></div>
     </dxi-item>
 
   </dx-tile-view>
 
   <div style="display: flex; flex-direction: column">
-    <div style="display: flex">
-      <img [src]="newCatalogItem.imageSrc" width="400">
-      <dx-form width="30%" [formData]="newCatalogItem"></dx-form>
-    </div>
+      <app-agguingere [francobollo]="catalogItem" (setAuthorFilter)="setAuthorFilter($event)"></app-agguingere>
 
-      <dx-data-grid [dataSource]="importFranco" [showRowLines]="true" [columnAutoWidth]="true" dateSerializationFormat="">
+      <dx-data-grid #importGrid [dataSource]="importFranco" [showRowLines]="true" [columnAutoWidth]="true"
+          (onRowClick)="updateCatalogItem($event)">
         <dxo-header-filter [visible]="true"></dxo-header-filter>
         <dxo-filter-row [visible]="true"></dxo-filter-row>
         <dxo-selection mode="single"></dxo-selection>
