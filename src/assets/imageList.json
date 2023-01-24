@@ -30,6 +30,31 @@
   {
     "folder": "page5",
     "images": [
+      "5-andersson.jpg", "5-appolinare.jpg", "5-balsak.jpg", "5-bomar.jpg", "5-camus.jpg", "5-darwin.jpg",
+      "5-delorme.jpg", "5-descartes.jpg", "5-didro.jpg", "5-gashek.jpg", "5-geine.jpg", "5-goldoni.jpg", "5-hauptman.jpg", "5-hesse.jpg",
+      "5-lagerlef.jpg", "5-levau.jpg", "5-mann1.jpg", "5-mann2.jpg", "5-merime.jpg",
+      "5-mickevich.jpg", "5-montesk.jpg", "5-rilke.jpg", "5-sales.png", "5-servantes.jpg", "5-tagor.jpg", "5-whitman.jpg", "5-zola.jpg"
+    ]
+  },
+  {
+    "folder": "page6",
+    "images": [
+      "akopyan.jpg", "belpoet.jpg", "blauman.jpg", "dzalil.jpg", "kropiv.jpg", "memedgul.jpg", "nazaryan.jpg",
+      "nikitin1.jpg", "nikitin2.jpg", "nikitin3.jpg", "pumpur.jpg", "rustaveli.jpg", "stanislavskii.jpg", "tuman1.jpg", "tuman2.jpg", "vilde.jpg"
+    ]
+  },
+  {
+    "folder": "page7",
+    "images": [
+      "armin.jpg","bradbury-block.jpg","bronte.jpg","bronte2.jpg",
+      "cobylyanska.jpg","dickinson.jpg","eliot.jpg","ferber.jpg",
+      "gaskel.jpg","mansfield.jpg","marsh.jpg","mitchell.jpg","parker.jpg","rand.jpg","verne-block-1.jpg"
+     ]
+  },
+  {
+    "folder": "page8",
+    "images": [
+      "bulgakov.jpg","fet.jpg","gorky.jpg","kuprin.jpg","nekrasov.jpg","turgenev.jpg"
     ]
   }
 ]
