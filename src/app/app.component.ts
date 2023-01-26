@@ -63,6 +63,9 @@ export class AppComponent {
 
   editFrancobollo(index: number) {
     this.catalogItem.imageSrc = this.galleryProperties.images[index].path
+    const fnStart = this.catalogItem.imageSrc.lastIndexOf('/')
+    this.catalogItem.fileName = this.catalogItem.imageSrc?.substring(fnStart<0 ? 0 : fnStart+1, this.catalogItem.imageSrc.lastIndexOf('.')-1)
+
   }
 
   importJSON(path: string): void {

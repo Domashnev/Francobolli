@@ -1,5 +1,6 @@
 export class Francobolli {
   imageSrc: string;
+  fileName?: string;
   author: string;
   issueYear: number;
   issuedCountry: string;
