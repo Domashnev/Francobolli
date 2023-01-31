@@ -22,6 +22,7 @@ export class AgguingereComponent implements OnInit {
 
   saveItem() {
     console.log(this.francobollo)
+    this.fs.saveInCatalog(this.francobollo)
   }
 
   authorChanged() {

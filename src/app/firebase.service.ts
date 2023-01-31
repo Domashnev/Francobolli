@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Francobolli } from './francobolli.model';
 import { Observable, tap } from 'rxjs';
 
 @Injectable()

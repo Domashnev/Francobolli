@@ -18,29 +18,28 @@ export class AppComponent {
   title = 'Francobolli';
   galleryProperties: any = {}
 
-  importFranco: Francobolli[] = []
   assetsImageList: AssetsImageList[] = []
   folders: string[]= []
 
   catalogItem: Francobolli = new Francobolli('')
 
-  constructor(private francobolliService: FrancobolliService,
+  constructor(public fs: FrancobolliService,
               private firebaseService: FirebaseService,
               private gallery: Gallery) {
 
     this.firebaseService.getImportStamps().subscribe(data => {
-      this.importFranco = data.data().import
+      this.fs.importFranco = data.data().import
       const authorSet = new Set<string>()
       const countriesSet = new Set<string>()
-      this.importFranco.forEach(f => {
+      this.fs.importFranco.forEach(f => {
         authorSet.add(f.author)
         countriesSet.add(f.issuedCountry)
       })
-      this.francobolliService.authors = Array.from(authorSet).sort()
-      this.francobolliService.countries = Array.from(countriesSet).sort()
+      this.fs.authors = Array.from(authorSet).sort()
+      this.fs.countries = Array.from(countriesSet).sort()
     })
 
-    this.francobolliService.getAssetsImageList().subscribe( imgList => {
+    this.fs.getAssetsImageList().subscribe(imgList => {
       this.assetsImageList = imgList
       this.folders = this.assetsImageList.map(f => { return f.folder } )
       this.changeFolder(this.assetsImageList[0].folder)
@@ -62,33 +61,21 @@ export class AppComponent {
   }
 
   editFrancobollo(index: number) {
-    this.catalogItem.imageSrc = this.galleryProperties.images[index].path
+    this.catalogItem = new Francobolli(this.galleryProperties.images[index].path)
     const fnStart = this.catalogItem.imageSrc.lastIndexOf('/')
-    this.catalogItem.fileName = this.catalogItem.imageSrc?.substring(fnStart<0 ? 0 : fnStart+1, this.catalogItem.imageSrc.lastIndexOf('.')-1)
-
-  }
-
-  importJSON(path: string): void {
-    this.francobolliService.getFrancobolliJson(path)
-      .pipe(
-        catchError(error => {
-          alert(error.message)
-          throw error
-        })
-      )
-      .subscribe(data => {
-        this.importFranco = data.concat(this.importFranco)
-        // this.saveFrancobolli()
-      })
+    this.catalogItem.fileName = this.catalogItem.imageSrc?.substring(fnStart<0 ? 0 : fnStart+1, this.catalogItem.imageSrc.lastIndexOf('.'))
+    if (!this.catalogItem.author) this.catalogItem.author = this.catalogItem.fileName[0].toUpperCase() + this.catalogItem.fileName?.slice(1)
   }
 
   saveFrancobolli(): void {
-    this.firebaseService.updateJsonToFirebase('stamps', 'import', this.importFranco).then(() => alert('Updated'))
+    this.firebaseService.updateJsonToFirebase('stamps', 'import', this.fs.importFranco).then(() => alert('Updated'))
   }
 
   updateCatalogItem(event: any) {
     if( event.rowType === 'data') {
-        this.catalogItem = event.data
+        const catItem = { ...event.data }
+        delete catItem.imageSrc
+        this.catalogItem = catItem
     }
   }
 

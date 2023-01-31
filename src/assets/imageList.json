@@ -56,5 +56,40 @@
     "images": [
       "bulgakov.jpg","fet.jpg","gorky.jpg","kuprin.jpg","nekrasov.jpg","turgenev.jpg"
     ]
+  },
+  {
+    "folder": "silvio",
+    "images": [
+      "alfieri.jpg", "amicis.jpg", "artusi.jpg", "belli.jpg", "belli2.jpg", "belli3.jpg", "biagi.jpg", "bontempelli.jpg", "buzzati.jpg",
+      "camillieri.jpg", "carducci.jpg", "dannunzio.jpg", "dante-block.jpg", "dante1.jpg", "dante2.jpg", "dante3.jpg", "dante4.jpg", "dante5.jpg", "dante5_1.jpg", "dante6.jpg", "dante7.jpg", "dante7_1.jpg", "dante7_2.jpg",
+      "deledda.jpg", "flaiano.jpg", "fogazzaro.jpg", "foscolo.jpg", "goethe.jpg", "goldoni.jpg", "goldoni2.jpg", "guareschi.jpg", "guerra.jpg", "landolfi.jpg", "leopardi.jpg", "leopardi2.jpg", "levi.jpg", "lorca.jpg",
+      "malaparte.jpg", "manzoni.jpg", "maupassant.jpg", "medici.jpg", "montale.jpg", "negri.jpg", "nievo.jpg",
+      "pallavolo.jpg", "pallavolo2.jpg", "pallavolo3.jpg", "pallavolo4.jpg", "pannunzio.jpg", "parini.jpg", "pascoli.jpg", "pascoli2.jpg", "pavese.jpg", "petrarca.jpg", "pinocchio.jpg", "quasimodo.jpg", "quasimodo2.jpg",
+      "repaci.jpg", "rossetti.jpg", "s1.jpg", "s2.jpg", "s3.jpg", "saba.jpg", "salgari.jpg", "sciascia.jpg", "serao.jpg", "tassoni.jpg", "tomasi.jpg", "tommaseo.jpg", "ungaretti.jpg", "verne.jpg", "vittorini.jpg", "wilde.jpg"
+    ]
+  },
+  {
+    "folder": "postbleed/pb2",
+    "images": [
+      "arniches.png", "aron.png", "benavente.png", "bunic-vucic.png", "byron.png", "camilo.png", "caragiale.png", "cela.png", "chateaubriand.jpg",
+      "courtline.jpg", "domanovich.png", "donelaitis.png", "follereau.jpg", "inclan.png", "kalman.png", "kermani.png", "kudirka.png", "madameDeStael.jpg",
+      "maironis.png", "malraux.jpg", "martires.png", "pushkin.png", "shalom.png", "stendhal.jpg", "zweig.png", "мирный.png"
+    ]
+  },
+  {
+    "folder": "postbleed/pb3",
+    "images": [
+      "assaker.png", "barreto.png", "beckett.png", "byron.png", "byron3.png", "caballero.png", "dante.png", "dante2.png", "dante3.png",
+      "dante4.png", "fitzgerald.png", "genevoix.png", "guehenno.png", "heaney.png", "manrique.png", "neruda.png", "servantes.png", "shaw.png",
+      "shaw2.png", "under.png", "villaespesa.png", "Wilde.png", "wilde2.png", "yeats.png", "вазов.png", "вапцаров.png", "славейков.png", "смирненски.png", "яворов.png"
+    ]
+  },
+  {
+    "folder": "postbleed/pb4",
+    "images": []
+  },
+  {
+    "folder": "belorussia",
+    "images": [ "cupala.jpg", "cupala2.jpg", "kolas-cupala.jpg", "kolas.jpg", "maka.jpg", "trio.jpg" ]
   }
 ]

@@ -14,6 +14,8 @@ export class Francobolli {
   heightRatio?: number;
 
   purchaseDate?: string;
+  regNum?: string;
+  regNum2?: string;
 
   constructor(imageSrc: string) {
     this.imageSrc = imageSrc

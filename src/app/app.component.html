@@ -32,7 +32,7 @@
   <div style="display: flex; flex-direction: column">
       <app-agguingere [francobollo]="catalogItem" (setAuthorFilter)="setAuthorFilter($event)"></app-agguingere>
 
-      <dx-data-grid #importGrid [dataSource]="importFranco" [showRowLines]="true" [columnAutoWidth]="true"
+      <dx-data-grid #importGrid [dataSource]="fs.importFranco" [showRowLines]="true" [columnAutoWidth]="true"
           (onRowClick)="updateCatalogItem($event)">
         <dxo-header-filter [visible]="true"></dxo-header-filter>
         <dxo-filter-row [visible]="true"></dxo-filter-row>

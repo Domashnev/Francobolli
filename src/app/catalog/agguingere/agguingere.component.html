@@ -5,7 +5,6 @@
     <img [src]="francobollo.imageSrc" width="100%">
   </div>
 
-  <form #itemForm>
     <div class="dx-fieldset">
       <div class="dx-field">
         <div class="dx-field-label">Автор (фио)</div>
@@ -59,13 +58,11 @@
         </div>
       </div>
 
-    </div>
+      <dx-button text="Сохранить" type="success" style="margin-left: 30px"
+                 (onClick)="saveItem()"
+                 [disabled]="!francobollo.imageSrc || !francobollo.author || !francobollo.issuedCountry">
+      </dx-button>
 
-    <dx-button text="Сохранить" type="success"
-               [useSubmitBehavior]="false" width="80%" style="margin-left: 30px"
-               (onClick)="saveItem()"
-               [disabled]="!francobollo.imageSrc || !francobollo.author || !francobollo.issuedCountry">
-    </dx-button>
-  </form>
+    </div>
 
 </div>
