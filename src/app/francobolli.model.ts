@@ -1,28 +1,35 @@
 export class Francobolli {
   imageSrc: string;
-  fileName?: string;
   author: string;
   issueYear: number;
   issuedCountry: string;
   description: string;
-
-  value?: number;
   cost?: number | string;
-  currency?: string;
-  valueRub?: number;
-  widthRatio?: number;
-  heightRatio?: number;
-
   purchaseDate?: string;
+
   regNum?: string;
   regNum2?: string;
 
-  constructor(imageSrc: string) {
+  widthRatio?: number;
+  heightRatio?: number;
+
+  constructor(imageSrc: string, author?: string ) {
     this.imageSrc = imageSrc
-    this.author = ''
-    this.issueYear= 1900
+    this.author = author ?? ''
     this.issuedCountry= ''
+    this.issueYear = 0
     this.description = ''
+  }
+
+  updateFieldsFromImport(importF: Francobolli): void {
+    if ( importF.author ) this.author = importF.author
+    if ( importF.description ) this.description = importF.description
+    if ( importF.issueYear ) this.issueYear = importF.issueYear
+    if ( importF.issuedCountry ) this.issuedCountry = importF.issuedCountry
+    if ( importF.cost ) this.cost = importF.cost
+    if ( importF.purchaseDate ) this.purchaseDate = importF.purchaseDate
+    if ( importF.regNum ) this.regNum = importF.regNum
+    if ( importF.regNum2 ) this.regNum2 = importF.regNum2
   }
 }
 

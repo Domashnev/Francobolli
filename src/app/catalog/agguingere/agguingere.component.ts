@@ -11,7 +11,7 @@ export class AgguingereComponent implements OnInit {
   @Input() francobollo: Francobolli
   @Output() setAuthorFilter: EventEmitter<string> = new EventEmitter<string>()
 
-  constructor(public fs: FrancobolliService) { }
+  constructor(public fs: FrancobolliService) {}
 
   ngOnInit(): void {
   }
@@ -21,7 +21,6 @@ export class AgguingereComponent implements OnInit {
   }
 
   saveItem() {
-    console.log(this.francobollo)
     this.fs.saveInCatalog(this.francobollo)
   }
 

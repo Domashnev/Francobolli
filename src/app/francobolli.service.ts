@@ -1,16 +1,52 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import { catchError, Observable } from "rxjs";
-import { Francobolli } from './francobolli.model';
+import {catchError, Observable, forkJoin, Subject, BehaviorSubject} from "rxjs";
+import {AssetsImageList, Francobolli} from './francobolli.model';
+import {FirebaseService} from "./firebase.service";
 
 @Injectable()
 export class FrancobolliService {
   countries: string[] = []
   authors: string[] = []
+
   catalog: Francobolli[] = []
   importFranco: Francobolli[] = []
+  assetsImageList: AssetsImageList[] = []
+  imageListSubject: Subject<AssetsImageList[]> = new Subject()
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private firebaseService: FirebaseService) {
+    forkJoin([
+      this.firebaseService.getCatalog(),
+      this.firebaseService.getImportStamps(),
+      this.getAssetsImageList()
+    ]).subscribe( response => {
+      const countriesSet = new Set<string>()
+      const authorsSet = new Set<string>()
+
+      this.catalog = response[0]
+      this.catalog.forEach(i => {
+        if (i.issuedCountry) countriesSet.add(i.issuedCountry)
+        if (i.author) authorsSet.add(i.author)
+      })
+
+      this.importFranco = response[1].data().import
+      this.removeCatalogItemsFromImport()
+
+      // Справочник СТРАН И ФАМИЛИЙ
+      this.importFranco.forEach(f => {
+        if (f.issuedCountry) countriesSet.add(f.issuedCountry)
+        if (f.author) authorsSet.add(f.author)
+      })
+      this.countries = Array.from(countriesSet).sort()
+      this.authors = Array.from(authorsSet).sort()
+
+      this.assetsImageList = response[2]
+      this.removeCatalogItemsFromImageList()
+      this.imageListSubject.next(this.assetsImageList)
+    })
+
+  }
 
   getFrancobolliJson(pathToJson: string): Observable<any> {
     return this.http.get(pathToJson)
@@ -28,12 +64,49 @@ export class FrancobolliService {
     return this.countries
   }
 
+  removeCatalogItemsFromImport(item?: Francobolli): void {
+    if(item) {
+      this.importFranco = this.importFranco.filter(f =>
+        (item.description && f.description !== item.description)
+        || (item.regNum && item.regNum !== f.regNum)
+        || (item.regNum2 && item.regNum2 !== f.regNum2)
+      )
+    } else {
+      const catalogDescriptions = this.catalog.map(i => i.description)
+      console.log('Удалено из импорта: ' + this.importFranco.filter( f => catalogDescriptions.includes(f.description)).length)
+      this.importFranco = this.importFranco.filter( f => !catalogDescriptions.includes(f.description))
+    }
+  }
+
+  removeCatalogItemsFromImageList(item?: Francobolli, folderName?: string): void {
+    let removeImageFromFolder = (folderImages: AssetsImageList, catalogItem: Francobolli) => {
+      const foundIndex = folderImages.images.findIndex(img => catalogItem.imageSrc.includes(folderName + '/' + img))
+      if(foundIndex) folderImages.images.splice(foundIndex, 1)
+    }
+
+    if (item && folderName){
+      const folderImages = this.assetsImageList.find(il => il.folder === folderName)
+      if (folderImages) removeImageFromFolder(folderImages, item)
+    } else {
+
+    }
+
+    this.imageListSubject.next(this.assetsImageList)
+  }
+
   saveInCatalog(item: Francobolli): void {
     this.catalog.push(item)
-    this.importFranco =  this.importFranco.filter( f => (item.description && f.description!==item.description)
-    || (item.regNum && item.regNum!==f.regNum) || (item.regNum2 && item.regNum2!==f.regNum2))
+    this.removeCatalogItemsFromImport(item)
 
-    console.log(this.catalog)
+    const authorItems: any[] = []
+    this.catalog.filter(i => i.author === item.author)
+      .forEach(i => authorItems.push({...i}))
+    this.firebaseService.updateAuthor(item.author, authorItems)
+  }
+
+  saveImportFranco(): void {
+    this.firebaseService.updateJsonToFirebase('stamps', 'import', this.importFranco)
+      .then(() => alert('Updated'))
   }
 
   importJSON(path: string): void {

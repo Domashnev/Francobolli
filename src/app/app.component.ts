@@ -15,7 +15,6 @@ import { DxDataGridComponent } from 'devextreme-angular';
 export class AppComponent {
   @ViewChild('importGrid') grid: DxDataGridComponent;
 
-  title = 'Francobolli';
   galleryProperties: any = {}
 
   assetsImageList: AssetsImageList[] = []
@@ -26,29 +25,17 @@ export class AppComponent {
   constructor(public fs: FrancobolliService,
               private firebaseService: FirebaseService,
               private gallery: Gallery) {
-
-    this.firebaseService.getImportStamps().subscribe(data => {
-      this.fs.importFranco = data.data().import
-      const authorSet = new Set<string>()
-      const countriesSet = new Set<string>()
-      this.fs.importFranco.forEach(f => {
-        authorSet.add(f.author)
-        countriesSet.add(f.issuedCountry)
-      })
-      this.fs.authors = Array.from(authorSet).sort()
-      this.fs.countries = Array.from(countriesSet).sort()
-    })
-
-    this.fs.getAssetsImageList().subscribe(imgList => {
+    this.fs.imageListSubject.subscribe( imgList => {
       this.assetsImageList = imgList
-      this.folders = this.assetsImageList.map(f => { return f.folder } )
-      this.changeFolder(this.assetsImageList[0].folder)
+      this.folders = this.assetsImageList
+        .filter(folder => folder.images.length)
+        .map(f => f.folder)
+      this.changeFolder(this.assetsImageList[2].folder)
     })
-
   }
 
   changeFolder(folderName: string): void {
-    const newFold = this.assetsImageList.find(item => item.folder === folderName)
+    const newFold = this.fs.assetsImageList.find(item => item.folder === folderName)
     if( newFold ) {
       this.galleryProperties.images = newFold.images
         .map(f => { return { path: 'assets/' + folderName + '/' +f } } )
@@ -61,21 +48,19 @@ export class AppComponent {
   }
 
   editFrancobollo(index: number) {
-    this.catalogItem = new Francobolli(this.galleryProperties.images[index].path)
-    const fnStart = this.catalogItem.imageSrc.lastIndexOf('/')
-    this.catalogItem.fileName = this.catalogItem.imageSrc?.substring(fnStart<0 ? 0 : fnStart+1, this.catalogItem.imageSrc.lastIndexOf('.'))
-    if (!this.catalogItem.author) this.catalogItem.author = this.catalogItem.fileName[0].toUpperCase() + this.catalogItem.fileName?.slice(1)
-  }
-
-  saveFrancobolli(): void {
-    this.firebaseService.updateJsonToFirebase('stamps', 'import', this.fs.importFranco).then(() => alert('Updated'))
+    const path = this.galleryProperties.images[index].path
+    const fnStart = path.lastIndexOf('/')
+    const fileName = path.substring(fnStart<0 ? 0 : fnStart+1, path.lastIndexOf('.')).replace(/[\d-]/g, '')
+    let author
+    if ( fileName.length > 3 ) {
+      author = fileName[0].toUpperCase() + fileName?.slice(1)
+    }
+    this.catalogItem = new Francobolli(path, author)
   }
 
   updateCatalogItem(event: any) {
     if( event.rowType === 'data') {
-        const catItem = { ...event.data }
-        delete catItem.imageSrc
-        this.catalogItem = catItem
+      this.catalogItem.updateFieldsFromImport(event.data)
     }
   }
 
