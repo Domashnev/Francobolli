@@ -16,8 +16,7 @@ export class AppComponent {
   @ViewChild('importGrid') grid: DxDataGridComponent;
 
   galleryProperties: any = {}
-
-  assetsImageList: AssetsImageList[] = []
+  fullImageList: AssetsImageList[] = []
   folders: string[]= []
 
   catalogItem: Francobolli = new Francobolli('')
@@ -26,19 +25,18 @@ export class AppComponent {
               private firebaseService: FirebaseService,
               private gallery: Gallery) {
     this.fs.imageListSubject.subscribe( imgList => {
-      this.assetsImageList = imgList
-      this.folders = this.assetsImageList
+      this.fullImageList = imgList
+      this.folders = this.fullImageList
         .filter(folder => folder.images.length)
         .map(f => f.folder)
-      this.changeFolder(this.assetsImageList[2].folder)
+      // this.changeFolder('path4')
     })
   }
 
   changeFolder(folderName: string): void {
-    const newFold = this.fs.assetsImageList.find(item => item.folder === folderName)
+    const newFold = this.fullImageList.find(item => item.folder === folderName)
     if( newFold ) {
-      this.galleryProperties.images = newFold.images
-        .map(f => { return { path: 'assets/' + folderName + '/' +f } } )
+      this.galleryProperties.images = newFold.images.map(f =>  { return { path: f } })
     }
   }
 

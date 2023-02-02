@@ -41,11 +41,16 @@ export class FrancobolliService {
       this.countries = Array.from(countriesSet).sort()
       this.authors = Array.from(authorsSet).sort()
 
-      this.assetsImageList = response[2]
+      this.assetsImageList = response[2] as AssetsImageList[]
+      this.assetsImageList.forEach(fold => fold.images = fold.images.map(img=> this.getImageFullPath(fold.folder, img)))
       this.removeCatalogItemsFromImageList()
       this.imageListSubject.next(this.assetsImageList)
     })
 
+  }
+
+  getImageFullPath(folder: string, fileName: string): string {
+    return 'assets/' + folder + '/' + fileName
   }
 
   getFrancobolliJson(pathToJson: string): Observable<any> {
@@ -78,17 +83,16 @@ export class FrancobolliService {
     }
   }
 
-  removeCatalogItemsFromImageList(item?: Francobolli, folderName?: string): void {
-    let removeImageFromFolder = (folderImages: AssetsImageList, catalogItem: Francobolli) => {
-      const foundIndex = folderImages.images.findIndex(img => catalogItem.imageSrc.includes(folderName + '/' + img))
-      if(foundIndex) folderImages.images.splice(foundIndex, 1)
-    }
-
-    if (item && folderName){
-      const folderImages = this.assetsImageList.find(il => il.folder === folderName)
-      if (folderImages) removeImageFromFolder(folderImages, item)
+  removeCatalogItemsFromImageList(item?: Francobolli): void {
+    if (item){
+      this.assetsImageList.forEach(fold => {
+        fold.images = fold.images.filter(imgPath => imgPath !== item.imageSrc)
+      })
     } else {
-
+      this.assetsImageList.forEach(fold => {
+        fold.images = fold.images
+          .filter(imgPath => !this.catalog.map(i => i.imageSrc).includes(imgPath))
+      })
     }
 
     this.imageListSubject.next(this.assetsImageList)
@@ -97,6 +101,7 @@ export class FrancobolliService {
   saveInCatalog(item: Francobolli): void {
     this.catalog.push(item)
     this.removeCatalogItemsFromImport(item)
+    this.removeCatalogItemsFromImageList(item)
 
     const authorItems: any[] = []
     this.catalog.filter(i => i.author === item.author)
