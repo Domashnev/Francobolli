@@ -18,6 +18,7 @@ export class AppComponent {
   galleryProperties: any = {}
   fullImageList: AssetsImageList[] = []
   folders: string[]= []
+  currentFolderImages: string[]=[]
 
   catalogItem: Francobolli = new Francobolli('')
 
@@ -29,15 +30,13 @@ export class AppComponent {
       this.folders = this.fullImageList
         .filter(folder => folder.images.length)
         .map(f => f.folder)
-      // this.changeFolder('path4')
     })
   }
 
   changeFolder(folderName: string): void {
     const newFold = this.fullImageList.find(item => item.folder === folderName)
-    if( newFold ) {
-      this.galleryProperties.images = newFold.images.map(f =>  { return { path: f } })
-    }
+    if( newFold ) this.currentFolderImages = newFold.images
+   // if( newFold ) this.galleryProperties.images = newFold.images.map(f =>  { return { path: f } })
   }
 
   showGallery(index: number = 0) {
@@ -45,8 +44,7 @@ export class AppComponent {
     this.gallery.load(this.galleryProperties);
   }
 
-  editFrancobollo(index: number) {
-    const path = this.galleryProperties.images[index].path
+  editFrancobollo(path: string) {
     const fnStart = path.lastIndexOf('/')
     const fileName = path.substring(fnStart<0 ? 0 : fnStart+1, path.lastIndexOf('.')).replace(/[\d-]/g, '')
     let author

@@ -14,12 +14,17 @@
 
 <div style="display: grid; grid-template-columns: 120px 1fr">
 
+  <div style="height: 100vh; overflow-y: auto">
+    <ng-container *ngFor="let imgSrc of currentFolderImages">
+      <img [src]="imgSrc" width="100%" (click)="editFrancobollo(imgSrc)" style="margin: 5px">
+    </ng-container>
+  </div>
+  <!--
   <dx-tile-view class="dx-tile-content"
                 width="100%" height="95vh" direction="vertical"
                 showScrollbar="onHover"
                 [baseItemHeight]="150" [baseItemWidth]="100" [itemMargin]="5">
-    <!--             [widthRatio]="francobollo.widthRatio"
-              [heightRatio]="francobollo.heightRatio"-->
+
     <dxi-item *ngFor="let imgSrc of galleryProperties.images; let imgIndex=index">
       <div class="image"
         [style.background-image]="'url(' + imgSrc.path + ')'"
@@ -27,7 +32,7 @@
       ></div>
     </dxi-item>
 
-  </dx-tile-view>
+  </dx-tile-view> -->
 
   <div style="display: flex; flex-direction: column">
       <app-agguingere [francobollo]="catalogItem" (setAuthorFilter)="setAuthorFilter($event)"></app-agguingere>

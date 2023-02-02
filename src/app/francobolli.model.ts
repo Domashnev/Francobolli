@@ -31,6 +31,14 @@ export class Francobolli {
     if ( importF.regNum ) this.regNum = importF.regNum
     if ( importF.regNum2 ) this.regNum2 = importF.regNum2
   }
+
+  clear() {
+    this.imageSrc = ''
+    this.author = ''
+    this.issuedCountry= ''
+    this.issueYear = 0
+    this.description = ''
+  }
 }
 
 export interface AssetsImageList {

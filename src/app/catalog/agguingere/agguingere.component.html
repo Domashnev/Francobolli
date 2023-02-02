@@ -1,6 +1,6 @@
 <div style="display: flex">
 
-  <div style="width: 250px; display: flex; flex-direction: column">
+  <div style="width: 320px; display: flex; flex-direction: column">
     <div style="font-size: xx-large; font-weight: 500; text-align: center">{{francobollo.author}}</div>
     <img [src]="francobollo.imageSrc" width="100%">
   </div>
@@ -10,13 +10,13 @@
         <div class="dx-field-label">Автор (фио)</div>
         <div class="dx-field-value">
           <dx-autocomplete
-            placeholder="Введите фамилию..."
+            placeholder="Введите фамилию (имя)"
             [(value)]="francobollo.author"
             [dataSource]="fs.getAuthors()"
             (onValueChanged)="authorChanged()"
           >
             <dx-validator>
-              <dxi-validation-rule type="required" message="Фамилия обязательна для заполнения"></dxi-validation-rule>
+              <dxi-validation-rule type="required" message="Обязательно для заполнения"></dxi-validation-rule>
             </dx-validator>
           </dx-autocomplete>
         </div>
@@ -33,7 +33,7 @@
               (onCustomItemCreating)="addCountry($event)"
             >
               <dx-validator>
-                <dxi-validation-rule type="required" message="Страна обязательна для заполнения"></dxi-validation-rule>
+                <dxi-validation-rule type="required" message="Обязательно для заполнения"></dxi-validation-rule>
               </dx-validator>
             </dx-select-box>
         </div>
@@ -42,9 +42,10 @@
       <div class="dx-field">
         <div class="dx-field-label">Год выпуска</div>
         <div class="dx-field-value">
-            <dx-number-box [(value)]="francobollo.issueYear" required="true" [min]="1860">
+            <dx-number-box [(value)]="francobollo.issueYear" required="true">
               <dx-validator>
                 <dxi-validation-rule type="required" message="Год выпуска обязателен для заполнения"></dxi-validation-rule>
+                <dxi-validation-rule type="range" [min]="1860" message="Начиная с 1860"></dxi-validation-rule>
               </dx-validator>
             </dx-number-box>
         </div>
@@ -60,7 +61,7 @@
 
       <dx-button text="Сохранить" type="success" style="margin-left: 30px"
                  (onClick)="saveItem()"
-                 [disabled]="!francobollo.imageSrc || !francobollo.author || !francobollo.issuedCountry">
+                 [disabled]="!francobollo.imageSrc || !francobollo.author || !francobollo.issuedCountry || !francobollo.issueYear">
       </dx-button>
 
     </div>
