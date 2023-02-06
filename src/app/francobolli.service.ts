@@ -25,6 +25,7 @@ export class FrancobolliService {
       const authorsSet = new Set<string>()
 
       this.catalog = response[0]
+      console.log('В каталоге: ' + this.catalog.length)
       this.catalog.forEach(i => {
         if (i.issuedCountry) countriesSet.add(i.issuedCountry)
         if (i.author) authorsSet.add(i.author)
@@ -70,16 +71,15 @@ export class FrancobolliService {
   }
 
   removeCatalogItemsFromImport(item?: Francobolli): void {
+    if( item && !item.description) return
     if(item) {
-      this.importFranco = this.importFranco.filter(f =>
-        (item.description && f.description !== item.description)
-        || (item.regNum && item.regNum !== f.regNum)
-        || (item.regNum2 && item.regNum2 !== f.regNum2)
-      )
+      this.importFranco = this.importFranco.filter(f => f.description !== (item.description ?? '')
+      && ((f.regNum ?? '') !== (item.regNum ?? '')))
     } else {
-      const catalogDescriptions = this.catalog.map(i => i.description)
-      console.log('Удалено из импорта: ' + this.importFranco.filter( f => catalogDescriptions.includes(f.description)).length)
-      this.importFranco = this.importFranco.filter( f => !catalogDescriptions.includes(f.description))
+      const catalogDescriptions = this.catalog.map(i => (i.description ?? '') + (i.regNum ?? '')).filter(i=>i)
+      this.importFranco = this.importFranco.filter( f =>
+        !catalogDescriptions.includes(f.description + (f.regNum ?? ''))
+      )
     }
   }
 
@@ -89,9 +89,9 @@ export class FrancobolliService {
         fold.images = fold.images.filter(imgPath => imgPath !== item.imageSrc)
       })
     } else {
+      const catalogImageSrc = this.catalog.map(i => i.imageSrc)
       this.assetsImageList.forEach(fold => {
-        fold.images = fold.images
-          .filter(imgPath => !this.catalog.map(i => i.imageSrc).includes(imgPath))
+        fold.images = fold.images.filter(imgPath => !catalogImageSrc.includes(imgPath))
       })
     }
 
@@ -99,7 +99,7 @@ export class FrancobolliService {
   }
 
   saveInCatalog(item: Francobolli): void {
-    this.catalog.push(item)
+    this.catalog.push(Object.assign({}, item))
     this.removeCatalogItemsFromImport(item)
     this.removeCatalogItemsFromImageList(item)
 

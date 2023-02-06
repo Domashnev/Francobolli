@@ -1,9 +1,10 @@
 export class Francobolli {
   imageSrc: string;
   author: string;
-  issueYear: number;
   issuedCountry: string;
-  description: string;
+
+  issueYear?: number;
+  description?: string;
   cost?: number | string;
   purchaseDate?: string;
 
@@ -13,12 +14,10 @@ export class Francobolli {
   widthRatio?: number;
   heightRatio?: number;
 
-  constructor(imageSrc: string, author?: string ) {
+  constructor(imageSrc: string, author?: string, country?: string ) {
     this.imageSrc = imageSrc
     this.author = author ?? ''
-    this.issuedCountry= ''
-    this.issueYear = 0
-    this.description = ''
+    this.issuedCountry= country ?? ''
   }
 
   updateFieldsFromImport(importF: Francobolli): void {
@@ -35,9 +34,14 @@ export class Francobolli {
   clear() {
     this.imageSrc = ''
     this.author = ''
-    this.issuedCountry= ''
-    this.issueYear = 0
-    this.description = ''
+    this.description = undefined
+    this.issueYear = undefined
+  }
+
+  removeEmptyProperties() {
+    for (const key in this) {
+      if(!this[key]) delete this[key]
+    }
   }
 }
 

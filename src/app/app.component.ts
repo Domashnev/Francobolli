@@ -19,6 +19,7 @@ export class AppComponent {
   fullImageList: AssetsImageList[] = []
   folders: string[]= []
   currentFolderImages: string[]=[]
+  currentFolder: string
 
   catalogItem: Francobolli = new Francobolli('')
 
@@ -30,10 +31,12 @@ export class AppComponent {
       this.folders = this.fullImageList
         .filter(folder => folder.images.length)
         .map(f => f.folder)
+      if (this.currentFolder ) this.currentFolderImages = this.fullImageList.find(item => item.folder === this.currentFolder)?.images ?? []
     })
   }
 
   changeFolder(folderName: string): void {
+    this.currentFolder = folderName
     const newFold = this.fullImageList.find(item => item.folder === folderName)
     if( newFold ) this.currentFolderImages = newFold.images
    // if( newFold ) this.galleryProperties.images = newFold.images.map(f =>  { return { path: f } })
@@ -51,7 +54,7 @@ export class AppComponent {
     if ( fileName.length > 3 ) {
       author = fileName[0].toUpperCase() + fileName?.slice(1)
     }
-    this.catalogItem = new Francobolli(path, author)
+    this.catalogItem = new Francobolli(path, author, this.catalogItem?.issuedCountry)
   }
 
   updateCatalogItem(event: any) {
