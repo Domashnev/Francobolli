@@ -25,15 +25,25 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { FrancobolliService } from './francobolli.service';
 import { FirebaseService } from './firebase.service';
 import { DxoValidationModule } from 'devextreme-angular/ui/nested';
+import { Routes, RouterModule } from '@angular/router';
+import { GuardareComponent } from './catalog/guardare/guardare.component';
+import { ImportComponent } from './catalog/import/import.component';
 
+const routes: Routes = [
+  {path: 'import', component: ImportComponent },
+  {path: '', component: GuardareComponent}
+];
 
 @NgModule({
   declarations: [
     AppComponent,
     AgguingereComponent,
+    GuardareComponent,
+    ImportComponent,
   ],
   imports: [
     BrowserModule,
+    RouterModule.forRoot(routes),
     HttpClientModule,
     DxGalleryModule, DxTileViewModule, DxDataGridModule, DxTabsModule,
     DxFormModule, DxSelectBoxModule, DxAutocompleteModule, DxTextBoxModule,

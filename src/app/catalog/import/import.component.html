@@ -1,0 +1,55 @@
+
+<!--dx-gallery
+  [dataSource]="francobolli"
+  [showNavButtons]="true"
+  [hoverStateEnabled]="true"
+  [stretchImages]="false"
+  [height]="200"
+  [width]="'80%'"
+  [initialItemWidth]="100"
+  (onItemClick)="showGallery($event.itemIndex)">
+</dx-gallery-->
+
+<dx-tabs [items]="folders" (onItemClick)="changeFolder($event.itemData)"></dx-tabs>
+
+<div style="display: grid; grid-template-columns: 120px 1fr">
+
+  <div style="height: 100vh; overflow-y: auto">
+    <ng-container *ngFor="let imgSrc of currentFolderImages">
+      <img [src]="imgSrc" width="100%" (click)="editFrancobollo(imgSrc)" style="margin: 5px">
+    </ng-container>
+  </div>
+  <!--
+  <dx-tile-view class="dx-tile-content"
+                width="100%" height="95vh" direction="vertical"
+                showScrollbar="onHover"
+                [baseItemHeight]="150" [baseItemWidth]="100" [itemMargin]="5">
+
+    <dxi-item *ngFor="let imgSrc of galleryProperties.images; let imgIndex=index">
+      <div class="image"
+        [style.background-image]="'url(' + imgSrc.path + ')'"
+        (click)="editFrancobollo(imgIndex)"
+      ></div>
+    </dxi-item>
+
+  </dx-tile-view> -->
+
+  <div style="display: flex; flex-direction: column">
+    <app-agguingere [francobollo]="catalogItem" (setAuthorFilter)="setAuthorFilter($event)"></app-agguingere>
+
+    <dx-data-grid #importGrid [dataSource]="fs.importFranco" [showRowLines]="true" [columnAutoWidth]="true"
+                  (onRowClick)="updateCatalogItem($event)">
+      <dxo-header-filter [visible]="true"></dxo-header-filter>
+      <dxo-filter-row [visible]="true"></dxo-filter-row>
+      <dxo-selection mode="single"></dxo-selection>
+      <dxo-pager visible="true" [showInfo]="true"></dxo-pager>
+      <dxi-column dataField="author" caption="Автор" dataType="string"></dxi-column>
+      <dxi-column dataField="description" caption="Описание" dataType="string"></dxi-column>
+      <dxi-column dataField="issueYear" caption="Год выпуска" dataType="number" ></dxi-column>
+      <dxi-column dataField="issuedCountry" caption="Страна выпуска" dataType="string"></dxi-column>
+      <dxi-column dataField="cost" caption="Цена" dataType="string"></dxi-column>
+      <dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column>
+      <dxi-column dataField="regNum" caption="Артикль" dataType="string"></dxi-column>
+    </dx-data-grid>
+  </div>
+</div>

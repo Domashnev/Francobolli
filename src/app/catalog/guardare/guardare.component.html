@@ -1,0 +1,19 @@
+<dx-data-grid [dataSource]="fs.catalog"
+              [showRowLines]="true"
+              [columnAutoWidth]="true">
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-selection mode="single"></dxo-selection>
+  <dxo-pager visible="true" [showInfo]="true"></dxo-pager>
+
+  <dxi-column caption="Марка" cellTemplate="imageFrancobollo"></dxi-column>
+  <dxi-column dataField="author" caption="Автор" dataType="string"></dxi-column>
+  <dxi-column dataField="issuedCountry" caption="Страна выпуска" dataType="string"></dxi-column>
+  <dxi-column dataField="issueYear" caption="Год выпуска" dataType="number" ></dxi-column>
+  <dxi-column dataField="description" caption="Описание" dataType="string"></dxi-column>
+  <dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column>
+
+  <div *dxTemplate="let item of 'imageFrancobollo'">
+    <img *ngIf="item.data.imageSrc" [src]="item.data.imageSrc" height="100">
+  </div>
+</dx-data-grid>
