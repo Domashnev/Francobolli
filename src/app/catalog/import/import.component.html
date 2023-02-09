@@ -1,15 +1,3 @@
-
-<!--dx-gallery
-  [dataSource]="francobolli"
-  [showNavButtons]="true"
-  [hoverStateEnabled]="true"
-  [stretchImages]="false"
-  [height]="200"
-  [width]="'80%'"
-  [initialItemWidth]="100"
-  (onItemClick)="showGallery($event.itemIndex)">
-</dx-gallery-->
-
 <dx-tabs [items]="folders" (onItemClick)="changeFolder($event.itemData)"></dx-tabs>
 
 <div style="display: grid; grid-template-columns: 120px 1fr">
@@ -19,20 +7,6 @@
       <img [src]="imgSrc" width="100%" (click)="editFrancobollo(imgSrc)" style="margin: 5px">
     </ng-container>
   </div>
-  <!--
-  <dx-tile-view class="dx-tile-content"
-                width="100%" height="95vh" direction="vertical"
-                showScrollbar="onHover"
-                [baseItemHeight]="150" [baseItemWidth]="100" [itemMargin]="5">
-
-    <dxi-item *ngFor="let imgSrc of galleryProperties.images; let imgIndex=index">
-      <div class="image"
-        [style.background-image]="'url(' + imgSrc.path + ')'"
-        (click)="editFrancobollo(imgIndex)"
-      ></div>
-    </dxi-item>
-
-  </dx-tile-view> -->
 
   <div style="display: flex; flex-direction: column">
     <app-agguingere [francobollo]="catalogItem" (setAuthorFilter)="setAuthorFilter($event)"></app-agguingere>

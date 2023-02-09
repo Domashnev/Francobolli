@@ -80,6 +80,14 @@
     ]
   },
   {
+    "folder": "postbleed/pb1",
+    "images": [
+      "Anne Frank.png", "dante.png", "dante2.png", "Diderot.png", "Droste-Hulshoff.png", "Goethe.png", "Hauff Wilhelm.png", "Huygens.png", "Ludvig Holberg.png", "Madine Gordimer.png",
+      "Meyer Antoine.png", "Miegel Agnes.png", "Multatuli.png", "Norge.png", "Saramago.png", "Schiller.png", "Sigrid Undset.png", "Simenon Georges.png",
+      "Wackar Klockan.png", "Пушкин, Мицкевич.png", "Пушкин.png"
+    ]
+  },
+  {
     "folder": "postbleed/pb2",
     "images": [
       "arniches.png", "aron.png", "benavente.png", "bunic-vucic.png", "byron.png", "camilo.png", "caragiale.png", "cela.png", "chateaubriand.jpg",
@@ -97,10 +105,37 @@
   },
   {
     "folder": "postbleed/pb4",
-    "images": []
+    "images": [
+      "benet.png", "Camus.png", "castro.png", "Castro2.png", "celestina.png", "Concha Espina.png", "dante.png", "dumas.png", "FFF.png",
+      "Gabriel Y Galan.png", "gethe.png", "Gustavo Adolfo Becquer.png", "Hemingway.png", "Hesse.png", "Juan Ramon Jimenez.png", "Lagerkvist.png",
+      "Laxness.png", "Lima Alceu Amoroso.png", "Machado.png", "Mario de Andrade.png", "Melville.png", "Miguel de Unamundo.png", "Moliere.png",
+      "Moliere2.png", "Pessoa Fernando.png", "Ribeiro Aquilino.png", "Tolstoj.png", "Verharen Emile.png", "Горький.png", "Горький2.png",
+      "Мицкевич.png", "Пастернак.png", "чехов.png"
+    ]
+  },
+  {
+    "folder": "postbleed/pb5",
+    "images": [
+      "Alejo Carpentier.png", "Alfonso Reyes.png", "Belisario Porras.png", "bunin.png", "Domingo Sarmiento.png", "Eugenio Maria de Hostos.png", "Gallegos Romulo.png",
+      "Jorge Isaacs.png", "Jose C del Valle.png", "Jose E Rodo.png", "Juan Montalvo.png", "lomonosov.png", "Machado de Assis.png", "Miguel Asturias.png",
+      "Neruda.png", "Palma Ricardo.png", "pasternak.png", "Pedro Urena.png", "Ruben Dario.png", "Сароян.png", "Шолохов.png"
+    ]
+  },
+  {
+    "folder": "postbleed/pb7",
+    "images": [
+      "Egon Friedell.png", "Gallegos.png", "Liperthe.png", "Max Mell.png", "Mixanaidhe.png", "Otto Stoessl.png", "Peter Rosegger.png", "schnitzler.png"
+    ]
   },
   {
     "folder": "belorussia",
     "images": [ "cupala.jpg", "cupala2.jpg", "kolas-cupala.jpg", "kolas.jpg", "maka.jpg", "trio.jpg" ]
+  },
+  {
+    "folder": "kazan",
+    "images": [
+      "Айтматов.png", "Барпы Алыкулов.png", "Вяземский.png", "Достоевский.png", "Карим Мустай.png", "Кунанбаев.png", "Меммедкулузаде.png",
+      "Пацаев.png", "Пушкин.png", "Солженицын.png", "Тургенев.png", "Фатьянов.png"
+    ]
   }
 ]

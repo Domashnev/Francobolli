@@ -3,7 +3,6 @@ import { DxDataGridComponent } from 'devextreme-angular';
 import { AssetsImageList, Francobolli } from '../../francobolli.model';
 import { FrancobolliService } from '../../francobolli.service';
 import { FirebaseService } from '../../firebase.service';
-import { Gallery } from 'angular-gallery';
 
 @Component({
   selector: 'app-import',
@@ -13,8 +12,8 @@ import { Gallery } from 'angular-gallery';
 export class ImportComponent implements OnInit {
 
   @ViewChild('importGrid') grid: DxDataGridComponent;
+  title = "Импорт. Связь с покупками."
 
-  galleryProperties: any = {}
   fullImageList: AssetsImageList[] = []
   folders: string[]= []
   currentFolderImages: string[]=[]
@@ -23,8 +22,7 @@ export class ImportComponent implements OnInit {
   catalogItem: Francobolli = new Francobolli('')
 
   constructor(public fs: FrancobolliService,
-              private firebaseService: FirebaseService,
-              private gallery: Gallery) {
+              private firebaseService: FirebaseService) {
     this.fs.imageListSubject.subscribe( imgList => {
       this.fullImageList = imgList
       this.folders = this.fullImageList
@@ -41,12 +39,6 @@ export class ImportComponent implements OnInit {
     this.currentFolder = folderName
     const newFold = this.fullImageList.find(item => item.folder === folderName)
     if( newFold ) this.currentFolderImages = newFold.images
-    // if( newFold ) this.galleryProperties.images = newFold.images.map(f =>  { return { path: f } })
-  }
-
-  showGallery(index: number = 0) {
-    this.galleryProperties.index = index;
-    this.gallery.load(this.galleryProperties);
   }
 
   editFrancobollo(path: string) {

@@ -1,19 +1,24 @@
-<dx-data-grid [dataSource]="fs.catalog"
-              [showRowLines]="true"
-              [columnAutoWidth]="true">
-  <dxo-header-filter [visible]="true"></dxo-header-filter>
-  <dxo-filter-row [visible]="true"></dxo-filter-row>
-  <dxo-selection mode="single"></dxo-selection>
-  <dxo-pager visible="true" [showInfo]="true"></dxo-pager>
+<!--dx-gallery
+  [dataSource]="items"
+  [showNavButtons]="true"
+  [hoverStateEnabled]="true"
+  [stretchImages]="false"
+  [height]="150"
+  [width]="'100%'"
+  [initialItemWidth]="100"
+  (onItemClick)="showGallery($event.itemIndex)">
+</dx-gallery-->
 
-  <dxi-column caption="Марка" cellTemplate="imageFrancobollo"></dxi-column>
-  <dxi-column dataField="author" caption="Автор" dataType="string"></dxi-column>
-  <dxi-column dataField="issuedCountry" caption="Страна выпуска" dataType="string"></dxi-column>
-  <dxi-column dataField="issueYear" caption="Год выпуска" dataType="number" ></dxi-column>
-  <dxi-column dataField="description" caption="Описание" dataType="string"></dxi-column>
-  <dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column>
+<dx-tile-view class="dx-tile-content"
+              [dataSource]="items"
+              width="90%" direction="vertical"
+              showScrollbar="onHover"
+              [baseItemHeight]="150"  [itemMargin]="10"
+              itemTemplate="list-item"
+              (onItemClick)="showGallery($event.itemIndex)">
 
-  <div *dxTemplate="let item of 'imageFrancobollo'">
-    <img *ngIf="item.data.imageSrc" [src]="item.data.imageSrc" height="100">
+  <div *dxTemplate="let data of 'list-item'; let index = index" style="display: flex; flex-direction: column; background: grey">
+    <img [src]="data.imageSrc" >
+    <div style="font-weight: 400; color: white">{{data.author}}</div>
   </div>
-</dx-data-grid>
+</dx-tile-view>

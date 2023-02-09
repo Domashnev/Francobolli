@@ -1,0 +1,24 @@
+<div style="display: flex; gap: 20px">
+  <dx-autocomplete #authorSearch label="Автор" placeholder="Ищем по фамилии и имени..."
+                   [dataSource]="fs.authors"
+                   [width]="'200px'" style="margin: 10px"
+                   [showClearButton]="true"
+                   (onValueChanged)="lookForAuthor($event.value, countrySelect.value)"></dx-autocomplete>
+
+  <dx-select-box #countrySelect
+                 [searchEnabled]="true"
+                 [acceptCustomValue]="false"
+                 [showClearButton]="true"
+                 label="Страна"
+                 placeholder="Выберите страну"
+                 [width]="'200px'"
+                 [dataSource]="fs.countries"
+                 (onValueChanged)="lookForAuthor(authorSearch.value, $event.value)"></dx-select-box>
+</div>
+
+<!--dx-autocomplete #countrySearch label="Cтрана" placeholder="Страна выпуска марки..."
+                 [dataSource]="fs.countries"
+                 [width]="'200px'" style="margin: 10px"
+                 (onValueChanged)="lookForAuthor(authorSearch.value, $event.value)"></dx-autocomplete-->
+
+<app-guardare [items]="viewItems"></app-guardare>

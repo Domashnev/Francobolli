@@ -17,10 +17,6 @@ export class AgguingereComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  fieldChanged(e: any): void {
-      console.log(e.dataField, e.value, this.francobollo)
-  }
-
    onFormSubmit(event: any): void {
      this.saveItem()
      notify({

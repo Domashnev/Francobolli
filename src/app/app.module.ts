@@ -28,10 +28,13 @@ import { DxoValidationModule } from 'devextreme-angular/ui/nested';
 import { Routes, RouterModule } from '@angular/router';
 import { GuardareComponent } from './catalog/guardare/guardare.component';
 import { ImportComponent } from './catalog/import/import.component';
+import { ViewComponent } from './catalog/view/view.component';
+import { WholeCatalogComponent } from './catalog/whole-catalog/whole-catalog.component';
 
 const routes: Routes = [
   {path: 'import', component: ImportComponent },
-  {path: '', component: GuardareComponent}
+  {path: 'catalog', component: WholeCatalogComponent },
+  {path: '', component: ViewComponent}
 ];
 
 @NgModule({
@@ -40,6 +43,8 @@ const routes: Routes = [
     AgguingereComponent,
     GuardareComponent,
     ImportComponent,
+    ViewComponent,
+    WholeCatalogComponent,
   ],
   imports: [
     BrowserModule,

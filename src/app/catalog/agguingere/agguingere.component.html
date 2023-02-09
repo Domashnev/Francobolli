@@ -5,20 +5,6 @@
     <img [src]="francobollo.imageSrc" width="100%">
   </div>
 
-  <!--form (submit)="onFormSubmit($event)">
-    <dx-form [formData]="francobollo" (onFieldDataChanged)="fieldChanged($event)">
-      <dxi-item dataField="author" editorType="dxAutocomplete"
-                label="Автор" [isRequired]="true"></dxi-item>
-      <dxi-item dataField="issuedCountry" editorType="dxSelectBox"
-                [editorOptions]="{dataSource="fs.getCountries()}"
-                label="Страна, выпустившая марку" [isRequired]="true"></dxi-item>
-      <dxi-item dataField="issueYear" label="Год выпуска"></dxi-item>
-      <dxi-item dataField="description" label="Описание"></dxi-item>
-      <dxi-item itemType="button" horizontalAlignment="center"
-                [buttonOptions]="{text: 'Сохранить',type: 'success',useSubmitBehavior: true}"></dxi-item>
-    </dx-form>
-  </form-->
-
     <div class="dx-fieldset">
       <div class="dx-field">
         <div class="dx-field-label">Автор (фио)</div>

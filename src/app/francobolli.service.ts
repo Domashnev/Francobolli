@@ -10,6 +10,7 @@ export class FrancobolliService {
   authors: string[] = []
 
   catalog: Francobolli[] = []
+  foundItemsSubject: Subject<Francobolli[]> = new Subject<Francobolli[]>()
   importFranco: Francobolli[] = []
   assetsImageList: AssetsImageList[] = []
   imageListSubject: Subject<AssetsImageList[]> = new Subject()
@@ -26,6 +27,8 @@ export class FrancobolliService {
 
       this.catalog = response[0]
       console.log('В каталоге: ' + this.catalog.length)
+      this.foundItemsSubject.next(this.catalog.slice(0,30))
+
       this.catalog.forEach(i => {
         if (i.issuedCountry) countriesSet.add(i.issuedCountry)
         if (i.author) authorsSet.add(i.author)
@@ -48,6 +51,12 @@ export class FrancobolliService {
       this.imageListSubject.next(this.assetsImageList)
     })
 
+  }
+
+  findAuthor(fio: string, country: string): void {
+    this.foundItemsSubject.next( this.catalog.filter(item =>
+      ( !fio || (fio && item.author?.includes(fio)) ) &&
+      (!country || (country && item.issuedCountry===country))).slice(0,100) )
   }
 
   getImageFullPath(folder: string, fileName: string): string {
