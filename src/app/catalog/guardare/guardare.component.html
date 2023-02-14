@@ -17,7 +17,7 @@
               itemTemplate="list-item"
               (onItemClick)="showGallery($event.itemIndex)">
 
-  <div *dxTemplate="let data of 'list-item'; let index = index" style="display: flex; flex-direction: column; background: grey">
+  <div *dxTemplate="let data of 'list-item'; let index = index" style="display: flex; flex-direction: column; background: darkslategray">
     <img [src]="data.imageSrc" >
     <div style="font-weight: 400; color: white">{{data.author}}</div>
   </div>

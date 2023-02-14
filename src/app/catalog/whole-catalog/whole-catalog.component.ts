@@ -8,9 +8,15 @@ import { FrancobolliService } from '../../francobolli.service';
 })
 export class WholeCatalogComponent implements OnInit {
 
+
   constructor(public fs: FrancobolliService) { }
 
   ngOnInit(): void {
   }
+
+  saveCatalog() {
+    this.fs.saveAllCatalog()
+  }
+
 
 }

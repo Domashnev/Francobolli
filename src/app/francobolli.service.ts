@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, forkJoin, Subject, BehaviorSubject} from "rxjs";
-import {AssetsImageList, Francobolli} from './francobolli.model';
+import { AssetsImageList, Author, Francobolli } from './francobolli.model';
 import {FirebaseService} from "./firebase.service";
 
 @Injectable()
@@ -9,6 +9,7 @@ export class FrancobolliService {
   countries: string[] = []
   authors: string[] = []
 
+  catalogAuthors: Author[] = []
   catalog: Francobolli[] = []
   foundItemsSubject: Subject<Francobolli[]> = new Subject<Francobolli[]>()
   importFranco: Francobolli[] = []
@@ -18,16 +19,19 @@ export class FrancobolliService {
   constructor(private http: HttpClient,
               private firebaseService: FirebaseService) {
     forkJoin([
-      this.firebaseService.getCatalog(),
+      this.firebaseService.getCatalogo(),
       this.firebaseService.getImportStamps(),
-      this.getAssetsImageList()
+      this.getAssetsImageList(),
+      this.firebaseService.getAuthors()
     ]).subscribe( response => {
       const countriesSet = new Set<string>()
       const authorsSet = new Set<string>()
 
       this.catalog = response[0]
       console.log('В каталоге: ' + this.catalog.length)
-      this.foundItemsSubject.next(this.catalog.slice(0,30))
+      this.foundItemsSubject.next(this.catalog.slice(0,50))
+
+      this.catalogAuthors = response[3]
 
       this.catalog.forEach(i => {
         if (i.issuedCountry) countriesSet.add(i.issuedCountry)
@@ -118,6 +122,32 @@ export class FrancobolliService {
     this.firebaseService.updateAuthor(item.author, authorItems)
   }
 
+  saveAllCatalog(): void {
+    this.firebaseService.saveAllCatalog(this.catalog).then()
+  }
+
+  saveAllAuthors(): void {
+    const names: Author[] = []
+    this.authors.forEach(author => {
+      const name: Author = { name: author, country: ''}
+      if ( author.search(/[а-яА-Я]/) >= 0 ){
+        name.alterName = this.transliterate(name.name)
+        name.country = 'Россия'
+      } else {
+        name.alterName = name.name
+      }
+      const fc = this.catalog.filter(f => f.author.includes(author) && !['Россия', 'СССР'].includes(f.issuedCountry))
+      if (fc && fc.length) name.country = fc[0].issuedCountry
+      names.push(name)
+    })
+
+    this.firebaseService.setAuthors(names).then()
+  }
+
+  saveAuthors(): void {
+    this.firebaseService.setAuthors(this.catalogAuthors).then()
+  }
+
   saveImportFranco(): void {
     this.firebaseService.updateJsonToFirebase('stamps', 'import', this.importFranco)
       .then(() => alert('Updated'))
@@ -134,5 +164,13 @@ export class FrancobolliService {
       .subscribe(data => {
         this.importFranco = data.concat(this.importFranco)
       })
+  }
+
+  transliterate(word: string): string{
+    const a: any = {"Ё":"YO","Й":"I","Ц":"TS","У":"U","К":"K","Е":"E","Н":"N","Г":"G","Ш":"SH","Щ":"SCH","З":"Z","Х":"H","Ъ":"'","ё":"yo","й":"i","ц":"ts","у":"u","к":"k","е":"e","н":"n","г":"g","ш":"sh","щ":"sch","з":"z","х":"h","ъ":"'","Ф":"F","Ы":"I","В":"V","А":"А","П":"P","Р":"R","О":"O","Л":"L","Д":"D","Ж":"ZH","Э":"E","ф":"f","ы":"i","в":"v","а":"a","п":"p","р":"r","о":"o","л":"l","д":"d","ж":"zh","э":"e","Я":"Ya","Ч":"CH","С":"S","М":"M","И":"I","Т":"T","Ь":"'","Б":"B","Ю":"YU","я":"ya","ч":"ch","с":"s","м":"m","и":"i","т":"t","ь":"'","б":"b","ю":"yu"};
+
+    return word.split('').map(function (char) {
+      return a[char] || char;
+    }).join("");
   }
 }

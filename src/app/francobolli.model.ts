@@ -49,3 +49,9 @@ export interface AssetsImageList {
   folder: string;
   images: string[];
 }
+
+export interface Author {
+  name: string;
+  alterName?: string;
+  country: string;
+}

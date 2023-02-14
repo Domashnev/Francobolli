@@ -1,0 +1,19 @@
+<dx-button text="Сохранить авторов" icon="card" (onClick)="saveAuthors()"></dx-button>
+
+<dx-data-grid [dataSource]="fs.catalogAuthors" width="50%"
+              [showRowLines]="true" [showColumnLines]="true" [showBorders]="true"
+              [columnAutoWidth]="true" [wordWrapEnabled]="false">
+  <dxo-header-filter [visible]="true"></dxo-header-filter>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-selection mode="single"></dxo-selection>
+  <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+  <dxo-pager [visible]="true" [showInfo]="true" [displayMode]="'full'"></dxo-pager>
+  <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+
+  <dxi-column dataField="name" caption="Автор" dataType="string"></dxi-column>
+  <dxi-column dataField="country" caption="Родина" dataType="string">
+    <dxo-lookup [dataSource]="fs.countries"></dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="alterName" caption="Альтернативные имена"></dxi-column>
+
+</dx-data-grid>

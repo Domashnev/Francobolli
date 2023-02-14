@@ -30,10 +30,12 @@ import { GuardareComponent } from './catalog/guardare/guardare.component';
 import { ImportComponent } from './catalog/import/import.component';
 import { ViewComponent } from './catalog/view/view.component';
 import { WholeCatalogComponent } from './catalog/whole-catalog/whole-catalog.component';
+import { AuthorsComponent } from './catalog/authors/authors.component';
 
 const routes: Routes = [
   {path: 'import', component: ImportComponent },
   {path: 'catalog', component: WholeCatalogComponent },
+  {path: 'authors', component: AuthorsComponent },
   {path: '', component: ViewComponent}
 ];
 
@@ -45,6 +47,7 @@ const routes: Routes = [
     ImportComponent,
     ViewComponent,
     WholeCatalogComponent,
+    AuthorsComponent,
   ],
   imports: [
     BrowserModule,
