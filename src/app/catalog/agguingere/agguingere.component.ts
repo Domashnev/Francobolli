@@ -12,6 +12,8 @@ export class AgguingereComponent implements OnInit {
   @Input() francobollo: Francobolli
   @Output() setAuthorFilter: EventEmitter<string> = new EventEmitter<string>()
 
+  saveCatalogFlag: boolean
+
   constructor(public fs: FrancobolliService) {}
 
   ngOnInit(): void {
@@ -38,9 +40,15 @@ export class AgguingereComponent implements OnInit {
     this.francobollo.removeEmptyProperties()
     this.fs.saveInCatalog(this.francobollo)
     this.francobollo.clear()
+    this.saveCatalogFlag = true
   }
 
   authorChanged() {
     this.setAuthorFilter.emit(this.francobollo.author)
+  }
+
+  saveCatalog() {
+    this.fs.saveAllCatalog()
+    this.saveCatalogFlag = false
   }
 }

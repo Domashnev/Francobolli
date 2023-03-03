@@ -21,8 +21,7 @@ export class ImportComponent implements OnInit {
 
   catalogItem: Francobolli = new Francobolli('')
 
-  constructor(public fs: FrancobolliService,
-              private firebaseService: FirebaseService) {
+  constructor(public fs: FrancobolliService) {
     this.fs.imageListSubject.subscribe( imgList => {
       this.fullImageList = imgList
       this.folders = this.fullImageList
