@@ -12,8 +12,7 @@ export class ViewComponent implements OnInit {
 
   constructor(public fs: FrancobolliService) {
     this.fs.foundItemsSubject.subscribe(data => {
-      this.viewItems = data
-      console.log(data)
+      this.viewItems = data.sort( (a, b) => a.author > b.author ? -1 : 1)
     }
 )
   }
@@ -23,5 +22,8 @@ export class ViewComponent implements OnInit {
 
   lookForAuthor(fio: string, country: string) {
     this.fs.findAuthor(fio, country)
+  }
+  lookForAuthorsByPatria(country: string) {
+    this.fs.findAuthorsByPatria(country)
   }
 }

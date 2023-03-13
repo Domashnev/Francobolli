@@ -33,6 +33,11 @@ export class FrancobolliService {
 
       this.catalogAuthors = response[3]
 
+      this.catalog.forEach(item => {
+        const auth = this.catalogAuthors.find(a => a.name.includes(item.author) || a.alterName?.includes(item.author))
+        item.patria = auth ? auth.country : 'UNDEFINED'
+      })
+
       this.catalog.forEach(i => {
         if (i.issuedCountry) countriesSet.add(i.issuedCountry)
         if (i.author) authorsSet.add(i.author)
@@ -61,6 +66,11 @@ export class FrancobolliService {
     this.foundItemsSubject.next( this.catalog.filter(item =>
       ( !fio || (fio && item.author?.includes(fio)) ) &&
       (!country || (country && item.issuedCountry===country))).slice(0,100) )
+  }
+
+  findAuthorsByPatria(country: string): void {
+    this.foundItemsSubject.next( this.catalog.filter(item =>
+      (!country || (country && item.patria === country))).slice(0,100) )
   }
 
   getImageFullPath(folder: string, fileName: string): string {

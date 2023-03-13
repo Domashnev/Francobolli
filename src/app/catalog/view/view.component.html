@@ -5,11 +5,20 @@
                    [showClearButton]="true"
                    (onValueChanged)="lookForAuthor($event.value, countrySelect.value)"></dx-autocomplete>
 
+  <dx-select-box #patriaSelect
+                 [searchEnabled]="true"
+                 [acceptCustomValue]="false"
+                 [showClearButton]="true"
+                 label="Родина"
+                 placeholder="Выберите из какой страны"
+                 [width]="'200px'"
+                 [dataSource]="fs.countries"
+                 (onValueChanged)="lookForAuthorsByPatria($event.value)"></dx-select-box>
   <dx-select-box #countrySelect
                  [searchEnabled]="true"
                  [acceptCustomValue]="false"
                  [showClearButton]="true"
-                 label="Страна"
+                 label="Страна выпуска"
                  placeholder="Выберите страну"
                  [width]="'200px'"
                  [dataSource]="fs.countries"
