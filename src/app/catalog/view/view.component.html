@@ -6,13 +6,11 @@
                    (onValueChanged)="lookForAuthor($event.value, countrySelect.value)"></dx-autocomplete>
 
   <dx-select-box #patriaSelect
-                 [searchEnabled]="true"
-                 [acceptCustomValue]="false"
+                 [searchEnabled]="true" [acceptCustomValue]="false"
                  [showClearButton]="true"
-                 label="Родина"
-                 placeholder="Выберите из какой страны"
+                 label="Родина" placeholder="Выберите из какой страны"
                  [width]="'200px'"
-                 [dataSource]="fs.countries"
+                 [dataSource]="fs.patrie"
                  (onValueChanged)="lookForAuthorsByPatria($event.value)"></dx-select-box>
   <dx-select-box #countrySelect
                  [searchEnabled]="true"

@@ -1,6 +1,6 @@
 <dx-button text="Сохранить авторов" icon="card" (onClick)="saveAuthors()"></dx-button>
 
-<dx-data-grid [dataSource]="fs.catalogAuthors" width="50%"
+<dx-data-grid [dataSource]="fs.catalogAuthors" width="80%"
               [showRowLines]="true" [showColumnLines]="true" [showBorders]="true"
               [columnAutoWidth]="true" [wordWrapEnabled]="false">
   <dxo-header-filter [visible]="true"></dxo-header-filter>
@@ -12,7 +12,7 @@
 
   <dxi-column dataField="name" caption="Автор" dataType="string"></dxi-column>
   <dxi-column dataField="country" caption="Родина" dataType="string">
-    <dxo-lookup [dataSource]="fs.countries"></dxo-lookup>
+    <dxo-lookup [dataSource]="fs.patrie"></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="alterName" caption="Альтернативные имена"></dxi-column>
 

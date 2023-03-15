@@ -8,6 +8,7 @@ import {FirebaseService} from "./firebase.service";
 export class FrancobolliService {
   countries: string[] = []
   authors: string[] = []
+  patrie: string[] = []
 
   catalogAuthors: Author[] = []
   catalog: Francobolli[] = []
@@ -32,11 +33,14 @@ export class FrancobolliService {
       this.foundItemsSubject.next(this.catalog.slice(0,50))
 
       this.catalogAuthors = response[3]
+      const patrieSet = new Set<string>()
+      this.catalogAuthors.forEach(item => patrieSet.add(item.country))
+      this.patrie = Array.from(patrieSet).sort()
 
-      this.catalog.forEach(item => {
+     /* this.catalog.forEach(item => {
         const auth = this.catalogAuthors.find(a => a.name.includes(item.author) || a.alterName?.includes(item.author))
         item.patria = auth ? auth.country : 'UNDEFINED'
-      })
+      })*/
 
       this.catalog.forEach(i => {
         if (i.issuedCountry) countriesSet.add(i.issuedCountry)
@@ -69,8 +73,21 @@ export class FrancobolliService {
   }
 
   findAuthorsByPatria(country: string): void {
-    this.foundItemsSubject.next( this.catalog.filter(item =>
-      (!country || (country && item.patria === country))).slice(0,100) )
+    const authorsFromPatria = this.catalogAuthors.filter(a => a.country === country)
+    authorsFromPatria.forEach(i => {
+        i.name = i.name.toLowerCase()
+        i.alterName = i.alterName?.toLowerCase()
+      })
+
+    const stamps = this.catalog.filter(item =>
+      authorsFromPatria.find( a =>
+        item.author.toLowerCase().includes(a.name)
+        ||
+        a.alterName?.includes(item.author.toLowerCase())
+      )
+    )
+
+    this.foundItemsSubject.next(stamps)
   }
 
   getImageFullPath(folder: string, fileName: string): string {

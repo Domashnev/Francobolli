@@ -23,7 +23,7 @@ export class ViewComponent implements OnInit {
   lookForAuthor(fio: string, country: string) {
     this.fs.findAuthor(fio, country)
   }
-  lookForAuthorsByPatria(country: string) {
-    this.fs.findAuthorsByPatria(country)
+  lookForAuthorsByPatria(patria: string) {
+    this.fs.findAuthorsByPatria(patria)
   }
 }
