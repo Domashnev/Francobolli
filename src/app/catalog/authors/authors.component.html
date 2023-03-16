@@ -1,4 +1,6 @@
-<dx-button text="Сохранить авторов" icon="card" (onClick)="saveAuthors()"></dx-button>
+<app-new-author></app-new-author>
+
+<dx-button text="Сохранить всех авторов" icon="card" (onClick)="saveAuthors()"></dx-button>
 
 <dx-data-grid [dataSource]="fs.catalogAuthors" width="80%"
               [showRowLines]="true" [showColumnLines]="true" [showBorders]="true"

@@ -1,0 +1,31 @@
+<div style="width: 50%; min-width: 300px;">
+
+<div class="dx-fieldset">
+  <div class="dx-fieldset-header">Фамилия имя</div>
+  <div class="dx-field">
+    <dx-text-box placeholder="Введите фамилию"></dx-text-box>
+  </div>
+</div>
+
+<div class="dx-fieldset">
+  <div class="dx-fieldset-header">Псевдонимы или имя на других яхыках</div>
+  <div class="dx-field">
+    <dx-text-box></dx-text-box>
+  </div>
+</div>
+
+<div class="dx-fieldset">
+  <div class="dx-fieldset-header">Родина</div>
+  <div class="dx-field">
+    <dx-select-box
+      [dataSource]="dataSource" valueExpr="country" [grouped]="true" displayExpr="country" [searchEnabled]="true"
+    ></dx-select-box>
+  </div>
+</div>
+
+  <div class="dx-fieldset">
+    <div class="dx-field">
+      <dx-button text="Сохранить" (onClick)="createAuthor()"></dx-button>
+    </div>
+  </div>
+</div>

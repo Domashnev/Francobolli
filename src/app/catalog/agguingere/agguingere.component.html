@@ -12,7 +12,7 @@
           <dx-autocomplete
             placeholder="Введите фамилию (имя)"
             [(value)]="francobollo.author"
-            [dataSource]="fs.getAuthors()"
+            [dataSource]="fs.catalogAuthors"
             (onValueChanged)="authorChanged()"
           >
             <dx-validator>

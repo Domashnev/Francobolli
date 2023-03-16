@@ -1,11 +1,20 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, forkJoin, Subject, BehaviorSubject} from "rxjs";
-import { AssetsImageList, Author, Francobolli } from './francobolli.model';
+import {
+  AssetsImageList,
+  Author,
+  CountriesAndContinent,
+  CountriesByContinent,
+  CountryAndContinent,
+  Francobolli
+} from './francobolli.model';
 import {FirebaseService} from "./firebase.service";
 
 @Injectable()
 export class FrancobolliService {
+  allCountries: CountryAndContinent[]
+  continentCountries = CountriesByContinent
   countries: string[] = []
   authors: string[] = []
   patrie: string[] = []
@@ -19,6 +28,9 @@ export class FrancobolliService {
 
   constructor(private http: HttpClient,
               private firebaseService: FirebaseService) {
+
+    this.prepareAllCountries()
+
     forkJoin([
       this.firebaseService.getCatalogo(),
       this.firebaseService.getImportStamps(),
@@ -108,6 +120,11 @@ export class FrancobolliService {
 
   getCountries(): string[] {
     return this.countries
+  }
+
+  prepareAllCountries(): void {
+    this.allCountries = []
+    CountriesByContinent.forEach(cont =>  cont.countries.forEach(country => this.allCountries.push( { id: this.allCountries.length+1, continent: cont.continent, country })))
   }
 
   removeCatalogItemsFromImport(item?: Francobolli): void {

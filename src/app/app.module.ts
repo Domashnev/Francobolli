@@ -15,7 +15,7 @@ import {
   DxNumberBoxModule,
   DxTextAreaModule,
   DxButtonModule,
-  DxValidatorModule,
+  DxValidatorModule, DxLookupModule, DxTreeListModule,
 } from 'devextreme-angular';
 import { IvyGalleryModule } from 'angular-gallery';
 import { AgguingereComponent } from './catalog/agguingere/agguingere.component';
@@ -31,6 +31,7 @@ import { ImportComponent } from './catalog/import/import.component';
 import { ViewComponent } from './catalog/view/view.component';
 import { WholeCatalogComponent } from './catalog/whole-catalog/whole-catalog.component';
 import { AuthorsComponent } from './catalog/authors/authors.component';
+import { NewAuthorComponent } from './catalog/authors/new-author/new-author.component';
 
 const routes: Routes = [
   {path: 'import', component: ImportComponent },
@@ -48,13 +49,14 @@ const routes: Routes = [
     ViewComponent,
     WholeCatalogComponent,
     AuthorsComponent,
+    NewAuthorComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
-    DxGalleryModule, DxTileViewModule, DxDataGridModule, DxTabsModule,
-    DxFormModule, DxSelectBoxModule, DxAutocompleteModule, DxTextBoxModule,
+    DxGalleryModule, DxTileViewModule, DxDataGridModule, DxTabsModule, DxTreeListModule,
+    DxFormModule, DxSelectBoxModule, DxAutocompleteModule, DxTextBoxModule, DxLookupModule,
     DxNumberBoxModule, DxTextAreaModule, DxButtonModule, DxValidatorModule, DxoValidationModule,
     IvyGalleryModule,
     AngularFireModule.initializeApp(environment.firebase),
