@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, forkJoin, Subject, BehaviorSubject} from "rxjs";
 import {
@@ -11,13 +11,15 @@ import {
 } from './francobolli.model';
 import {FirebaseService} from "./firebase.service";
 
-@Injectable()
+@Injectable({providedIn:  'root'})
 export class FrancobolliService {
   allCountries: CountryAndContinent[]
   continentCountries = CountriesByContinent
   countries: string[] = []
   authors: string[] = []
   patrie: string[] = []
+
+  authorsMap = new Map<string, Francobolli[]>()
 
   catalogAuthors: Author[] = []
   catalog: Francobolli[] = []
@@ -40,19 +42,29 @@ export class FrancobolliService {
       const countriesSet = new Set<string>()
       const authorsSet = new Set<string>()
 
-      this.catalog = response[0]
+      this.catalog = response[0].filter(f => !['Волейбол', 'Pallavolo', 'Pinocchio'].includes(f.author))
       console.log('В каталоге: ' + this.catalog.length)
       this.foundItemsSubject.next(this.catalog.slice(0,50))
 
       this.catalogAuthors = response[3]
+
       const patrieSet = new Set<string>()
       this.catalogAuthors.forEach(item => patrieSet.add(item.country))
       this.patrie = Array.from(patrieSet).sort()
 
-     /* this.catalog.forEach(item => {
-        const auth = this.catalogAuthors.find(a => a.name.includes(item.author) || a.alterName?.includes(item.author))
-        item.patria = auth ? auth.country : 'UNDEFINED'
-      })*/
+      this.authorsMap.set('UNDEFINED', [])
+      this.catalog.forEach(item => {
+         const auth = this.catalogAuthors.find(a => item.author.includes(a.name))
+         if ( !auth ) {
+           this.authorsMap.get('UNDEFINED')?.push(item)
+         }else if (this.authorsMap.has(auth.name)) {
+           this.authorsMap.get(auth.name)?.push(item)
+         } else {
+           this.authorsMap.set(auth.name, [item])
+         }
+      })
+      if( this.authorsMap.has('UNDEFINED') && this.authorsMap.get('UNDEFINED')?.length === 0 ) this.authorsMap.delete('UNDEFINED')
+      // console.log(this.authorsMap)
 
       this.catalog.forEach(i => {
         if (i.issuedCountry) countriesSet.add(i.issuedCountry)

@@ -3,7 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Observable, map } from 'rxjs';
 import { Author, Francobolli } from "./francobolli.model";
 
-@Injectable()
+@Injectable({providedIn:  'root'})
 export class FirebaseService {
 
   constructor(private firestore: AngularFirestore) { }

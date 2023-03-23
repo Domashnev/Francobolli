@@ -1,7 +1,7 @@
-<div style="display: flex; gap: 20px">
+<div style="display: flex; gap: 5px; margin-bottom: 10px">
   <dx-autocomplete #authorSearch label="Автор" placeholder="Ищем по фамилии и имени..."
                    [dataSource]="fs.authors"
-                   [width]="'200px'" style="margin: 10px"
+                   [width]="'200px'"
                    [showClearButton]="true"
                    (onValueChanged)="lookForAuthor($event.value, countrySelect.value)"></dx-autocomplete>
 

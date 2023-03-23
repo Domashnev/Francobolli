@@ -1,0 +1,21 @@
+<div style="display: flex; border-bottom: 1px dotted #b3a9a9; margin-bottom: 20px;">
+  <div>
+    <img width="100" src="assets/authors/pushkin.jpg" class="rounded-circle">
+  </div>
+
+  <div class="text-info">
+    {{author}}
+    <span class="badge text-bg-secondary">{{items.length}}</span>
+  </div>
+
+  <dx-gallery
+    style="background: darkslategray"
+    [dataSource]="items"
+    [showNavButtons]="true"
+    [hoverStateEnabled]="true"
+    [stretchImages]="false"
+    [height]="180"
+    [width]="'100%'"
+    [initialItemWidth]="100">
+  </dx-gallery>
+</div>

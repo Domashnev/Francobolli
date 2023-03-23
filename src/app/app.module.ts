@@ -22,8 +22,6 @@ import { AgguingereComponent } from './catalog/agguingere/agguingere.component';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { FrancobolliService } from './francobolli.service';
-import { FirebaseService } from './firebase.service';
 import { DxoValidationModule } from 'devextreme-angular/ui/nested';
 import { Routes, RouterModule } from '@angular/router';
 import { GuardareComponent } from './catalog/guardare/guardare.component';
@@ -32,12 +30,16 @@ import { ViewComponent } from './catalog/view/view.component';
 import { WholeCatalogComponent } from './catalog/whole-catalog/whole-catalog.component';
 import { AuthorsComponent } from './catalog/authors/authors.component';
 import { NewAuthorComponent } from './catalog/authors/new-author/new-author.component';
+import { AuthorStampsComponent } from './catalog/authors/author-stamps/author-stamps.component';
 
 const routes: Routes = [
-  {path: 'import', component: ImportComponent },
-  {path: 'catalog', component: WholeCatalogComponent },
-  {path: 'authors', component: AuthorsComponent },
-  {path: '', component: ViewComponent}
+  {path: '', children: [
+      {path: 'import', component: ImportComponent },
+      {path: 'catalog', component: WholeCatalogComponent },
+      {path: 'authors', component: AuthorsComponent },
+      {path: '', component: ViewComponent}
+    ]
+  },
 ];
 
 @NgModule({
@@ -50,6 +52,7 @@ const routes: Routes = [
     WholeCatalogComponent,
     AuthorsComponent,
     NewAuthorComponent,
+    AuthorStampsComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,10 +64,6 @@ const routes: Routes = [
     IvyGalleryModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-  ],
-  providers: [
-      FrancobolliService,
-      FirebaseService
   ],
 
   bootstrap: [AppComponent]
