@@ -7,7 +7,6 @@ import { Francobolli } from '../../../francobolli.model';
   styleUrls: ['./author-stamps.component.css']
 })
 export class AuthorStampsComponent implements OnInit {
-  @Input() author: string;
   @Input() items: Francobolli[]
 
   constructor() { }

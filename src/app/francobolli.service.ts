@@ -4,7 +4,6 @@ import {catchError, Observable, forkJoin, Subject, BehaviorSubject} from "rxjs";
 import {
   AssetsImageList,
   Author,
-  CountriesAndContinent,
   CountriesByContinent,
   CountryAndContinent,
   Francobolli
@@ -15,15 +14,16 @@ import {FirebaseService} from "./firebase.service";
 export class FrancobolliService {
   allCountries: CountryAndContinent[]
   continentCountries = CountriesByContinent
-  countries: string[] = []
-  authors: string[] = []
-  patrie: string[] = []
+
+  countries: string[] = [] // Страны выпустившие марки
+  patrie: string[] = []    // Родины авторов
 
   authorsMap = new Map<string, Francobolli[]>()
-
   catalogAuthors: Author[] = []
+
   catalog: Francobolli[] = []
   foundItemsSubject: Subject<Francobolli[]> = new Subject<Francobolli[]>()
+
   importFranco: Francobolli[] = []
   assetsImageList: AssetsImageList[] = []
   imageListSubject: Subject<AssetsImageList[]> = new Subject()
@@ -43,13 +43,23 @@ export class FrancobolliService {
       const authorsSet = new Set<string>()
 
       this.catalog = response[0].filter(f => !['Волейбол', 'Pallavolo', 'Pinocchio'].includes(f.author))
-      console.log('В каталоге: ' + this.catalog.length)
+      console.log('Марок: ' + this.catalog.length)
       this.foundItemsSubject.next(this.catalog.slice(0,50))
 
       this.catalogAuthors = response[3]
-
       const patrieSet = new Set<string>()
-      this.catalogAuthors.forEach(item => patrieSet.add(item.country))
+      this.catalogAuthors.forEach((item, index) => {
+      /*  item.name = item.name.split(' ').map(n => {
+          return (n.length > 3 || ['lee', 'poe', 'ayn'].includes(n)) ? n[0].toUpperCase() + n.slice(1) : n
+        }).join(' ') */
+        patrieSet.add(item.country)
+        const fac = this.allCountries.find(c => c.country === item.country)
+        if (fac){
+          fac.authors ? fac.authors.push(item.name) : fac.authors = [item.name]
+        } else {
+          console.log('Не найдена страна ' + item.country, item.name)
+        }
+      })
       this.patrie = Array.from(patrieSet).sort()
 
       this.authorsMap.set('UNDEFINED', [])
@@ -63,24 +73,16 @@ export class FrancobolliService {
            this.authorsMap.set(auth.name, [item])
          }
       })
+      if ( this.authorsMap.has('UNDEFINED') && this.authorsMap.get('UNDEFINED')?.length) {
+        console.log('Авторы с неопределенной страной', this.authorsMap.get('UNDEFINED'))
+      }
       if( this.authorsMap.has('UNDEFINED') && this.authorsMap.get('UNDEFINED')?.length === 0 ) this.authorsMap.delete('UNDEFINED')
-      // console.log(this.authorsMap)
 
-      this.catalog.forEach(i => {
-        if (i.issuedCountry) countriesSet.add(i.issuedCountry)
-        if (i.author) authorsSet.add(i.author)
-      })
+      this.catalog.forEach(i => { if (i.issuedCountry) countriesSet.add(i.issuedCountry) } )
+      this.countries = Array.from(countriesSet).sort()
 
       this.importFranco = response[1].data().import
       this.removeCatalogItemsFromImport()
-
-      // Справочник СТРАН И ФАМИЛИЙ
-      this.importFranco.forEach(f => {
-        if (f.issuedCountry) countriesSet.add(f.issuedCountry)
-        if (f.author) authorsSet.add(f.author)
-      })
-      this.countries = Array.from(countriesSet).sort()
-      this.authors = Array.from(authorsSet).sort()
 
       this.assetsImageList = response[2] as AssetsImageList[]
       this.assetsImageList.forEach(fold => fold.images = fold.images.map(img=> this.getImageFullPath(fold.folder, img)))
@@ -97,7 +99,7 @@ export class FrancobolliService {
   }
 
   findAuthorsByPatria(country: string): void {
-    const authorsFromPatria = this.catalogAuthors.filter(a => a.country === country)
+    const authorsFromPatria = this.catalogAuthors.filter(a => a.country === country).slice()
     authorsFromPatria.forEach(i => {
         i.name = i.name.toLowerCase()
         i.alterName = i.alterName?.toLowerCase()
@@ -124,10 +126,6 @@ export class FrancobolliService {
 
   getAssetsImageList(): Observable<any> {
     return this.http.get("assets/imageList.json")
-  }
-
-  getAuthors(): string[] {
-    return this.authors
   }
 
   getCountries(): string[] {
@@ -182,24 +180,6 @@ export class FrancobolliService {
     this.firebaseService.saveAllCatalog(this.catalog).then()
   }
 
-  saveAllAuthors(): void {
-    const names: Author[] = []
-    this.authors.forEach(author => {
-      const name: Author = { name: author, country: ''}
-      if ( author.search(/[а-яА-Я]/) >= 0 ){
-        name.alterName = this.transliterate(name.name)
-        name.country = 'Россия'
-      } else {
-        name.alterName = name.name
-      }
-      const fc = this.catalog.filter(f => f.author.includes(author) && !['Россия', 'СССР'].includes(f.issuedCountry))
-      if (fc && fc.length) name.country = fc[0].issuedCountry
-      names.push(name)
-    })
-
-    this.firebaseService.setAuthors(names).then()
-  }
-
   saveAuthors(): void {
     this.firebaseService.setAuthors(this.catalogAuthors).then()
   }
@@ -229,4 +209,5 @@ export class FrancobolliService {
       return a[char] || char;
     }).join("");
   }
+
 }

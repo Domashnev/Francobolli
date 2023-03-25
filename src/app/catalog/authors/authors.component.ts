@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FrancobolliService } from '../../francobolli.service';
-import { Francobolli } from '../../francobolli.model';
+import {Author, Francobolli} from '../../francobolli.model';
 
 @Component({
   selector: 'app-authors',
@@ -9,14 +9,17 @@ import { Francobolli } from '../../francobolli.model';
 })
 export class AuthorsComponent implements OnInit {
 
-  pushkin: Francobolli[] = []
+  authorsStamps: Francobolli[] = []
   constructor(public fs: FrancobolliService) { }
 
   ngOnInit(): void {
-    this.pushkin = this.fs.catalog.filter(f => f.author.includes('Пушкин')).sort((f1,f2) => (f1.issueYear ?? 0) - (f2.issueYear ?? 0) )
   }
 
   saveAuthors() {
     this.fs.saveAuthors()
+  }
+
+  selectAuthor(author: Author) {
+    this.authorsStamps = !author ? [] : this.fs.catalog.filter(f => f.author.includes(author.name)).sort((f1, f2) => (f1.issueYear ?? 0) - (f2.issueYear ?? 0) )
   }
 }

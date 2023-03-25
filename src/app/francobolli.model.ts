@@ -53,6 +53,7 @@ export interface AssetsImageList {
 }
 
 export interface Author {
+  id?: number;
   name: string;
   alterName?: string;
   country: string;

@@ -1,21 +1,22 @@
-<app-new-author></app-new-author>
-<app-author-stamps author="Пушкин" [items]="pushkin"></app-author-stamps>
+
+<app-author-stamps [items]="authorsStamps"></app-author-stamps>
 
 <dx-button text="Сохранить всех авторов" icon="card" (onClick)="saveAuthors()"></dx-button>
 
-<dx-data-grid [dataSource]="fs.catalogAuthors" width="80%"
+<dx-data-grid [dataSource]="fs.catalogAuthors" width="80%" keyExpr="name"
               [showRowLines]="true" [showColumnLines]="true" [showBorders]="true"
-              [columnAutoWidth]="true" [wordWrapEnabled]="false">
+              [columnAutoWidth]="true" [wordWrapEnabled]="false"
+              (onCellClick)="selectAuthor($event.data)">
   <dxo-header-filter [visible]="true"></dxo-header-filter>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-selection mode="single"></dxo-selection>
-  <dxo-paging [enabled]="true" [pageSize]="50"></dxo-paging>
+  <dxo-paging [enabled]="true" [pageSize]="20"></dxo-paging>
   <dxo-pager [visible]="true" [showInfo]="true" [displayMode]="'full'"></dxo-pager>
   <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
 
   <dxi-column dataField="name" caption="Автор" dataType="string"></dxi-column>
   <dxi-column dataField="country" caption="Родина" dataType="string">
-    <dxo-lookup [dataSource]="fs.patrie"></dxo-lookup>
+    <dxo-lookup [dataSource]="fs.allCountries" displayExpr="country" valueExpr="country"></dxo-lookup>
   </dxi-column>
   <dxi-column dataField="alterName" caption="Альтернативные имена"></dxi-column>
 
