@@ -160,5 +160,18 @@
       "чернышевский.jpg","чехов.jpg","чехов2.jpg","шевченко1.jpg","шевченко2.jpg","шевченко3.jpg",
       "шевченко4.jpg","шевченко5.jpg"
     ]
+  },
+  {
+    "folder": "appendix",
+    "images": [
+      "Albert, Ldestree.jpeg",
+      "Frans vancauwelaert.jpeg",
+      "pushkinBlock1.jpg",
+      "pusnkin22.jpg",
+      "Emile Verhaeren.jpeg",
+      "ilmari kianto.jpeg",
+      "pushkinBlock2.png",
+      "sillanpaa.jpeg"
+    ]
   }
 ]

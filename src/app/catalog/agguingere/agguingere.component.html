@@ -29,7 +29,9 @@
               [searchEnabled]="true"
               [acceptCustomValue]="true"
               placeholder="Выберите страну"
-              [dataSource]="fs.getCountries()"
+              [dataSource]="fs.allCountries"
+              displayExpr="country"
+              valueExpr="country"
               [(value)]="francobollo.issuedCountry"
               (onCustomItemCreating)="addCountry($event)"
             >
