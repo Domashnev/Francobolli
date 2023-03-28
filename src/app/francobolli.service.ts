@@ -17,6 +17,7 @@ export class FrancobolliService {
 
   countries: string[] = [] // Страны выпустившие марки
   patrie: string[] = []    // Родины авторов
+  issueYears: number[]=[]   // Года выпусков
 
   authorsMap = new Map<string, Francobolli[]>()
   catalogAuthors: Author[] = []
@@ -69,7 +70,11 @@ export class FrancobolliService {
          } else {
            this.authorsMap.set(auth.name, [item])
          }
+
+         if (item.issueYear && !this.issueYears.includes(item.issueYear)) this.issueYears.push(item.issueYear)
       })
+      this.issueYears = this.issueYears.sort()
+
       if ( this.authorsMap.has('UNDEFINED') && this.authorsMap.get('UNDEFINED')?.length) {
         console.log('Не найдены авторы ', this.authorsMap.get('UNDEFINED'))
       }
@@ -78,6 +83,7 @@ export class FrancobolliService {
 
       this.catalog.forEach(i => { if (i.issuedCountry) countriesSet.add(i.issuedCountry) } )
       this.countries = Array.from(countriesSet).sort()
+
       // console.log('Марок: ' + this.catalog.length, ' из ' + this.countries.length + ' стран')
       // console.log('Авторов: ' + this.authorsMap.size, ' из ' + this.allCountries.filter(c => c.authors).length + ' стран')
 
@@ -92,6 +98,19 @@ export class FrancobolliService {
 
   }
 
+  findAuthorInCatalog(name: string): void {
+    this.foundItemsSubject.next( this.catalog.filter(item => item.author.includes(name) ))
+  }
+
+  findStampsByCountry(country: string): void {
+    this.foundItemsSubject.next( this.catalog.filter(item => item.issuedCountry === country ))
+  }
+
+  findStampsByIssueYear( issueYear: number): void {
+    this.foundItemsSubject.next( this.catalog.filter(item => item.issueYear === issueYear ))
+  }
+
+
   findAuthor(fio: string, country: string): void {
     this.foundItemsSubject.next( this.catalog.filter(item =>
       ( !fio || (fio && item.author?.includes(fio)) ) &&
@@ -100,19 +119,9 @@ export class FrancobolliService {
 
   findAuthorsByPatria(country: string): void {
     const authorsFromPatria = this.catalogAuthors.filter(a => a.country === country).slice()
-    authorsFromPatria.forEach(i => {
-        i.name = i.name.toLowerCase()
-        i.alterName = i.alterName?.toLowerCase()
-      })
+    authorsFromPatria.forEach(i => i.name = i.name.toLowerCase())
 
-    const stamps = this.catalog.filter(item =>
-      authorsFromPatria.find( a =>
-        item.author.toLowerCase().includes(a.name)
-        ||
-        a.alterName?.includes(item.author.toLowerCase())
-      )
-    )
-
+    const stamps = this.catalog.filter(item => authorsFromPatria.find( a => item.author.toLowerCase().includes(a.name)))
     this.foundItemsSubject.next(stamps)
   }
 
