@@ -21,7 +21,7 @@ export class FrancobolliService {
   authorsMap = new Map<string, Francobolli[]>()
   catalogAuthors: Author[] = []
 
-  catalog: Francobolli[] = []
+  catalog: Francobolli[]
   foundItemsSubject: Subject<Francobolli[]> = new Subject<Francobolli[]>()
 
   importFranco: Francobolli[] = []
@@ -40,18 +40,13 @@ export class FrancobolliService {
       this.firebaseService.getAuthors()
     ]).subscribe( response => {
       const countriesSet = new Set<string>()
-      const authorsSet = new Set<string>()
 
       this.catalog = response[0].filter(f => !['Волейбол', 'Pallavolo', 'Pinocchio'].includes(f.author))
-      console.log('Марок: ' + this.catalog.length)
       this.foundItemsSubject.next(this.catalog.slice(0,50))
 
-      this.catalogAuthors = response[3]
+      this.catalogAuthors = response[3].sort((a1, a2) => a1.name > a2.name ? 1 : -1)
       const patrieSet = new Set<string>()
       this.catalogAuthors.forEach((item, index) => {
-      /*  item.name = item.name.split(' ').map(n => {
-          return (n.length > 3 || ['lee', 'poe', 'ayn'].includes(n)) ? n[0].toUpperCase() + n.slice(1) : n
-        }).join(' ') */
         patrieSet.add(item.country)
         const fac = this.allCountries.find(c => c.country === item.country)
         if (fac){
@@ -61,6 +56,8 @@ export class FrancobolliService {
         }
       })
       this.patrie = Array.from(patrieSet).sort()
+
+      this.allCountries.sort((c1, c2) => (c2.authors ? c2.authors.length: 0) - (c1.authors ? c1.authors.length : 0))
 
       this.authorsMap.set('UNDEFINED', [])
       this.catalog.forEach(item => {
@@ -74,12 +71,15 @@ export class FrancobolliService {
          }
       })
       if ( this.authorsMap.has('UNDEFINED') && this.authorsMap.get('UNDEFINED')?.length) {
-        console.log('Авторы с неопределенной страной', this.authorsMap.get('UNDEFINED'))
+        console.log('Не найдены авторы ', this.authorsMap.get('UNDEFINED'))
       }
       if( this.authorsMap.has('UNDEFINED') && this.authorsMap.get('UNDEFINED')?.length === 0 ) this.authorsMap.delete('UNDEFINED')
 
+
       this.catalog.forEach(i => { if (i.issuedCountry) countriesSet.add(i.issuedCountry) } )
       this.countries = Array.from(countriesSet).sort()
+      // console.log('Марок: ' + this.catalog.length, ' из ' + this.countries.length + ' стран')
+      // console.log('Авторов: ' + this.authorsMap.size, ' из ' + this.allCountries.filter(c => c.authors).length + ' стран')
 
       this.importFranco = response[1].data().import
       this.removeCatalogItemsFromImport()

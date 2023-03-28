@@ -21,6 +21,7 @@
     "@angular/router": "^14.2.0",
     "angular-gallery": "^1.0.2",
     "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.3",
     "devextreme": "22.1.5",
     "devextreme-angular": "22.1.5",
     "firebase": "^9.15.0",

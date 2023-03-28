@@ -31,6 +31,7 @@ import { WholeCatalogComponent } from './catalog/whole-catalog/whole-catalog.com
 import { AuthorsComponent } from './catalog/authors/authors.component';
 import { NewAuthorComponent } from './catalog/authors/new-author/new-author.component';
 import { AuthorStampsComponent } from './catalog/authors/author-stamps/author-stamps.component';
+import { InformationComponent } from './catalog/information/information.component';
 
 const routes: Routes = [
   {path: '', children: [
@@ -53,6 +54,7 @@ const routes: Routes = [
     AuthorsComponent,
     NewAuthorComponent,
     AuthorStampsComponent,
+    InformationComponent,
   ],
   imports: [
     BrowserModule,

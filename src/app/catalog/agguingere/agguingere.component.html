@@ -9,16 +9,20 @@
       <div class="dx-field">
         <div class="dx-field-label">Автор (фио)</div>
         <div class="dx-field-value">
-          <dx-autocomplete
+          <dx-select-box
+            [searchEnabled]="true"
+            [acceptCustomValue]="false"
             placeholder="Введите фамилию (имя)"
             [(value)]="francobollo.author"
+            displayExpr="name"
+            valueExpr="name"
             [dataSource]="fs.catalogAuthors"
             (onValueChanged)="authorChanged()"
           >
             <dx-validator>
               <dxi-validation-rule type="required" message="Обязательно для заполнения"></dxi-validation-rule>
             </dx-validator>
-          </dx-autocomplete>
+          </dx-select-box>
         </div>
       </div>
 
@@ -33,7 +37,6 @@
               displayExpr="country"
               valueExpr="country"
               [(value)]="francobollo.issuedCountry"
-              (onCustomItemCreating)="addCountry($event)"
             >
               <dx-validator>
                 <dxi-validation-rule type="required" message="Обязательно для заполнения"></dxi-validation-rule>
