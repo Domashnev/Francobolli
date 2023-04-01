@@ -11,19 +11,12 @@ export class ViewComponent implements OnInit {
   viewItems: Francobolli[]=[]
 
   constructor(public fs: FrancobolliService) {
-    this.fs.foundItemsSubject.subscribe(data => {
-      this.viewItems = data.sort( (a, b) => a.author > b.author ? -1 : 1)
-    }
-)
-  }
+   }
 
   ngOnInit(): void {
+    this.fs.foundItemsSubject.subscribe(data => {
+      this.viewItems = data.sort( (a, b) => a.author > b.author ? 1 : -1)
+    })
   }
 
-  lookForAuthor(fio: string, country: string) {
-    this.fs.findAuthor(fio, country)
-  }
-  lookForAuthorsByPatria(patria: string) {
-    this.fs.findAuthorsByPatria(patria)
-  }
 }

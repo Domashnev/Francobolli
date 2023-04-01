@@ -14,7 +14,7 @@
   <dxo-pager [visible]="true" [showInfo]="true" [displayMode]="'full'"></dxo-pager>
   <dxo-editing mode="cell" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
 
-  <dxi-column dataField="name" caption="Автор" dataType="string"></dxi-column>
+  <dxi-column dataField="name" caption="Автор" dataType="string" allowEditing="false"></dxi-column>
   <dxi-column dataField="country" caption="Родина" dataType="string">
     <dxo-lookup [dataSource]="fs.allCountries" displayExpr="country" valueExpr="country"></dxo-lookup>
   </dxi-column>

@@ -1,6 +1,6 @@
 import { Injectable, Type } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {catchError, Observable, forkJoin, Subject, BehaviorSubject} from "rxjs";
+import {catchError, Observable, forkJoin, Subject, BehaviorSubject, ReplaySubject} from "rxjs";
 import {
   AssetsImageList,
   Author,
@@ -9,6 +9,13 @@ import {
   Francobolli
 } from './francobolli.model';
 import {FirebaseService} from "./firebase.service";
+
+export interface SearchPattern {
+  patria?: string;
+  issuedCountry?: string;
+  author: string;
+  issueYear?: number;
+}
 
 @Injectable({providedIn:  'root'})
 export class FrancobolliService {
@@ -23,11 +30,12 @@ export class FrancobolliService {
   catalogAuthors: Author[] = []
 
   catalog: Francobolli[]
-  foundItemsSubject: Subject<Francobolli[]> = new Subject<Francobolli[]>()
+  foundItemsSubject: ReplaySubject<Francobolli[]> = new ReplaySubject<Francobolli[]>(1)
 
   importFranco: Francobolli[] = []
   assetsImageList: AssetsImageList[] = []
   imageListSubject: Subject<AssetsImageList[]> = new Subject()
+  searchPattern: SearchPattern = {author: ''}
 
   constructor(private http: HttpClient,
               private firebaseService: FirebaseService) {
@@ -43,11 +51,12 @@ export class FrancobolliService {
       const countriesSet = new Set<string>()
 
       this.catalog = response[0].filter(f => !['Волейбол', 'Pallavolo', 'Pinocchio'].includes(f.author))
-      this.foundItemsSubject.next(this.catalog.slice(0,50))
+      this.foundItemsSubject.next( this.shuffle(this.catalog).slice(0, 50) )
 
       this.catalogAuthors = response[3].sort((a1, a2) => a1.name > a2.name ? 1 : -1)
       const patrieSet = new Set<string>()
       this.catalogAuthors.forEach((item, index) => {
+        // item.name = item.name[0].toUpperCase() + item.name.slice(1)
         patrieSet.add(item.country)
         const fac = this.allCountries.find(c => c.country === item.country)
         if (fac){
@@ -71,7 +80,9 @@ export class FrancobolliService {
            this.authorsMap.set(auth.name, [item])
          }
 
-         if (item.issueYear && !this.issueYears.includes(item.issueYear)) this.issueYears.push(item.issueYear)
+         if (item.issueYear && !this.issueYears.includes(item.issueYear)){
+           this.issueYears.push(item.issueYear)
+         }
       })
       this.issueYears = this.issueYears.sort()
 
@@ -98,16 +109,22 @@ export class FrancobolliService {
 
   }
 
-  findAuthorInCatalog(name: string): void {
-    this.foundItemsSubject.next( this.catalog.filter(item => item.author.includes(name) ))
+  findAuthorInCatalog(name?: string): void {
+    if( !name && !this.searchPattern.author) return
+    if (name) this.searchPattern.author = name
+    this.foundItemsSubject.next( this.catalog.filter(item => item.author === this.searchPattern.author ))
   }
 
-  findStampsByCountry(country: string): void {
-    this.foundItemsSubject.next( this.catalog.filter(item => item.issuedCountry === country ))
+  findStampsByCountry(country?: string): void {
+    if(!country && !this.searchPattern.issuedCountry) return
+    if (country) this.searchPattern.issuedCountry =  country
+    this.foundItemsSubject.next( this.catalog.filter(item => item.issuedCountry === this.searchPattern.issuedCountry ))
   }
 
-  findStampsByIssueYear( issueYear: number): void {
-    this.foundItemsSubject.next( this.catalog.filter(item => item.issueYear === issueYear ))
+  findStampsByIssueYear( issueYear?: number): void {
+    if( !issueYear && !this.searchPattern.issueYear) return
+    if (issueYear) this.searchPattern.issueYear = issueYear
+    this.foundItemsSubject.next( this.catalog.filter(item => item.issueYear === this.searchPattern.issueYear ))
   }
 
 
@@ -117,11 +134,12 @@ export class FrancobolliService {
       (!country || (country && item.issuedCountry===country))).slice(0,100) )
   }
 
-  findAuthorsByPatria(country: string): void {
-    const authorsFromPatria = this.catalogAuthors.filter(a => a.country === country).slice()
-    authorsFromPatria.forEach(i => i.name = i.name.toLowerCase())
+  findAuthorsByPatria(patria?: string): void {
+    if(!patria && !this.searchPattern.patria) return
+    if (patria) this.searchPattern.patria = patria
 
-    const stamps = this.catalog.filter(item => authorsFromPatria.find( a => item.author.toLowerCase().includes(a.name)))
+    const authorsFromPatria = this.catalogAuthors.filter(a => a.country === this.searchPattern.patria)
+    const stamps = this.catalog.filter(item => authorsFromPatria.find( a => item.author.toLowerCase().includes(a.name.toLowerCase())))
     this.foundItemsSubject.next(stamps)
   }
 
@@ -219,4 +237,17 @@ export class FrancobolliService {
     }).join("");
   }
 
+  shuffle(arr: any, count: number = 1) {
+    if (arr.length < 3) { return arr; }
+    for (let c = 0; c < count; c++) {
+      for (let i = 0; i < arr.length; i++) {
+        let newIndex = i;
+        while (newIndex == i || newIndex >= arr.length) {
+          newIndex = Math.floor((Math.random() * arr.length));
+        }
+        [arr[i], arr[newIndex]] = [arr[newIndex], arr[i]];
+      }
+    }
+    return arr;
+  }
 }
