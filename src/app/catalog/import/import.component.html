@@ -9,7 +9,7 @@
   </div>
 
   <div style="display: flex; flex-direction: column">
-    <app-agguingere [francobollo]="catalogItem" (setAuthorFilter)="setAuthorFilter($event)"></app-agguingere>
+    <!--app-agguingere [francobollo]="catalogItem" (setAuthorFilter)="setAuthorFilter($event)"></app-agguingere-->
 
     <dx-data-grid #importGrid [dataSource]="fs.importFranco" [showRowLines]="true" [columnAutoWidth]="true"
                   (onRowClick)="updateCatalogItem($event)">

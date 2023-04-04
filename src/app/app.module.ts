@@ -32,6 +32,7 @@ import { AuthorsComponent } from './catalog/authors/authors.component';
 import { NewAuthorComponent } from './catalog/authors/new-author/new-author.component';
 import { AuthorStampsComponent } from './catalog/authors/author-stamps/author-stamps.component';
 import { InformationComponent } from './catalog/information/information.component';
+import { AddAuthorComponent } from './catalog/add-author/add-author.component';
 
 const routes: Routes = [
   {path: '', children: [
@@ -55,6 +56,7 @@ const routes: Routes = [
     NewAuthorComponent,
     AuthorStampsComponent,
     InformationComponent,
+    AddAuthorComponent,
   ],
   imports: [
     BrowserModule,

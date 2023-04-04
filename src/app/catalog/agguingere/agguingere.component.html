@@ -1,20 +1,23 @@
-<div style="display: flex">
+<div style="display: flex; width: 100%">
 
-  <div style="width: 320px; display: flex; flex-direction: column">
+  <div style="max-width: 320px; display: flex; flex-direction: column">
     <div style="font-size: xx-large; font-weight: 500; text-align: center">{{francobollo.author}}</div>
-    <img [src]="francobollo.imageSrc" width="100%">
+    <img [src]="francobollo.imageSrc" width="100%" >
   </div>
 
     <div class="dx-fieldset">
+
       <div class="dx-field">
         <div class="dx-field-label">Автор (фио)</div>
         <div class="dx-field-value">
           <dx-select-box
             [searchEnabled]="true"
+            required
             [acceptCustomValue]="false"
             placeholder="Введите фамилию (имя)"
             [(value)]="francobollo.author"
             displayExpr="name"
+            [searchExpr]="['name', 'alterName']"
             valueExpr="name"
             [dataSource]="fs.catalogAuthors"
             (onValueChanged)="authorChanged()"
@@ -23,7 +26,14 @@
               <dxi-validation-rule type="required" message="Обязательно для заполнения"></dxi-validation-rule>
             </dx-validator>
           </dx-select-box>
+          <dx-button width="50px" icon="plus" (click)="newAuthorShow=!newAuthorShow"></dx-button>
         </div>
+
+      </div>
+
+
+      <div *ngIf="newAuthorShow" class="border-1">
+        <app-add-author></app-add-author>
       </div>
 
       <div class="dx-field">
@@ -48,7 +58,7 @@
       <div class="dx-field">
         <div class="dx-field-label">Год выпуска</div>
         <div class="dx-field-value">
-            <dx-number-box type="fixedPoint" [(value)]="francobollo.issueYear!">
+            <dx-number-box type="fixedPoint" [(value)]="francobollo.issueYear!" [max]="2088" [min]="1850">
             </dx-number-box>
         </div>
       </div>
@@ -56,15 +66,25 @@
       <div class="dx-field">
         <div class="dx-field-label">Описание</div>
         <div class="dx-field-value">
-            <dx-text-area height="70" [(value)]="francobollo.description!" >
-            </dx-text-area>
+            <dx-text-box [(value)]="francobollo.description!">
+            </dx-text-box>
         </div>
       </div>
 
-      <dx-button text="Сохранить" type="success" style="margin-left: 30px"
-                 (onClick)="saveItem()"
-                 [disabled]="!francobollo.imageSrc || !francobollo.author || !francobollo.issuedCountry">
-      </dx-button>
+      <div class="dx-field">
+        <div class="dx-field-label">Image URL</div>
+        <div class="dx-field-value">
+          <dx-text-box [(value)]="francobollo.imageSrc!">
+          </dx-text-box>
+        </div>
+      </div>
+
+      <div class="dx-field">
+        <dx-button text="Сохранить" type="success" style="margin: 10px; width: 50%"
+                   (onClick)="saveItem()"
+                   [disabled]="!francobollo.imageSrc || !francobollo.author || !francobollo.issuedCountry">
+        </dx-button>
+      </div>
 
     </div>
 

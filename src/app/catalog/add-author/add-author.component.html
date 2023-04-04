@@ -1,0 +1,18 @@
+<div style="display: flex; width: 100%">
+
+  <dx-autocomplete width="40%" label="Автор"
+                   valueExpr="name" [dataSource]="fs.catalogAuthors!"
+                   [(value)]="newAuthor.name"></dx-autocomplete>
+
+  <dx-select-box width="30%" label="Родина"
+                 placeholder="Страна" [searchEnabled]="true" [acceptCustomValue]="false"
+                 [(value)]="newAuthor.country!"
+                 valueExpr="country" displayExpr="country"
+                 [dataSource]="fs.allCountries"></dx-select-box>
+
+  <dx-text-box width="30%" label="Псевдоним, имя на других языках"
+               [(value)]="newAuthor.alterName!"></dx-text-box>
+
+  <dx-button icon="save" (onClick)="addAuthorToCatalog()" [disabled]="!newAuthor.name || !newAuthor.country"> </dx-button>
+
+</div>

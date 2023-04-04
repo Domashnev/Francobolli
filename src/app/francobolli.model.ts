@@ -16,8 +16,8 @@ export class Francobolli {
 
   patria?: string;
 
-  constructor(imageSrc: string, author?: string, country?: string ) {
-    this.imageSrc = imageSrc
+  constructor(imageSrc?: string, author?: string, country?: string ) {
+    this.imageSrc = imageSrc ?? ''
     this.author = author ?? ''
     this.issuedCountry= country ?? ''
   }
@@ -53,7 +53,6 @@ export interface AssetsImageList {
 }
 
 export interface Author {
-  id?: number;
   name: string;
   alterName?: string;
   country: string;

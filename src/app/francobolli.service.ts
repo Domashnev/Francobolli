@@ -56,7 +56,8 @@ export class FrancobolliService {
       this.catalogAuthors = response[3].sort((a1, a2) => a1.name > a2.name ? 1 : -1)
       const patrieSet = new Set<string>()
       this.catalogAuthors.forEach((item, index) => {
-        // item.name = item.name[0].toUpperCase() + item.name.slice(1)
+    //    item.name = item.name.split(' ')
+    //      .map( n => ['di', 'von', 'del'].includes(n) ? n : n[0].toUpperCase()+n.slice(1)).join(' ')
         patrieSet.add(item.country)
         const fac = this.allCountries.find(c => c.country === item.country)
         if (fac){
@@ -192,7 +193,7 @@ export class FrancobolliService {
     this.imageListSubject.next(this.assetsImageList)
   }
 
-  saveInCatalog(item: Francobolli): void {
+  /* saveInCatalog(item: Francobolli): void {
     this.catalog.push(Object.assign({}, item))
     this.removeCatalogItemsFromImport(item)
     this.removeCatalogItemsFromImageList(item)
@@ -201,7 +202,7 @@ export class FrancobolliService {
     this.catalog.filter(i => i.author === item.author)
       .forEach(i => authorItems.push({...i}))
     this.firebaseService.updateAuthor(item.author, authorItems)
-  }
+  }*/
 
   saveAllCatalog(): void {
     this.firebaseService.saveAllCatalog(this.catalog).then()

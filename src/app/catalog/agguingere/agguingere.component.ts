@@ -9,46 +9,38 @@ import notify from 'devextreme/ui/notify';
   styleUrls: ['./agguingere.component.css']
 })
 export class AgguingereComponent implements OnInit {
-  @Input() francobollo: Francobolli
+  // @Input() francobollo: Francobolli
   @Output() setAuthorFilter: EventEmitter<string> = new EventEmitter<string>()
 
   saveCatalogFlag: boolean
+  francobollo: Francobolli
+  newAuthorShow = false
 
   constructor(public fs: FrancobolliService) {}
 
   ngOnInit(): void {
-  }
-
-   onFormSubmit(event: any): void {
-     this.saveItem()
-     notify({
-       message: 'Марка сохранена в каталог',
-       position: {
-         my: 'right top',
-         at: 'center top',
-       },
-     }, 'success', 2000);
-
-     event.preventDefault();
-   };
-
-  addCountry(event: any) {
-    this.fs.countries.push(event.text)
+    this.francobollo = new Francobolli()
   }
 
   saveItem() {
     this.francobollo.removeEmptyProperties()
-    this.fs.saveInCatalog(this.francobollo)
+    // this.fs.saveInCatalog(this.francobollo)
+    this.fs.catalog.push(Object.assign({},this.francobollo))
     this.francobollo.clear()
     this.saveCatalogFlag = true
   }
 
   authorChanged() {
     this.setAuthorFilter.emit(this.francobollo.author)
+    this.fs.findAuthorInCatalog(this.francobollo.author)
   }
 
   saveCatalog() {
     this.fs.saveAllCatalog()
     this.saveCatalogFlag = false
+  }
+
+  showAddAuthor() {
+
   }
 }

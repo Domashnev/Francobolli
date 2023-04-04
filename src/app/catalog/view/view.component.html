@@ -1,4 +1,6 @@
 <app-information></app-information>
+<app-agguingere></app-agguingere>
+<app-guardare [items]="viewItems"></app-guardare>
 <!--
 <div style="display: flex; gap: 5px; margin-bottom: 10px">
   <dx-autocomplete #authorSearch label="Автор" placeholder="Ищем по фамилии и имени..."
@@ -32,4 +34,3 @@
                  [width]="'200px'" style="margin: 10px"
                  (onValueChanged)="lookForAuthor(authorSearch.value, $event.value)"></dx-autocomplete-->
 
-<app-guardare [items]="viewItems"></app-guardare>
