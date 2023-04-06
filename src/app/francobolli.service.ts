@@ -56,8 +56,7 @@ export class FrancobolliService {
       this.catalogAuthors = response[3].sort((a1, a2) => a1.name > a2.name ? 1 : -1)
       const patrieSet = new Set<string>()
       this.catalogAuthors.forEach((item, index) => {
-    //    item.name = item.name.split(' ')
-    //      .map( n => ['di', 'von', 'del'].includes(n) ? n : n[0].toUpperCase()+n.slice(1)).join(' ')
+       // item.name = item.name.split(' ').map((n, nInd) => (nInd>0 && ['de', 'del', 'di', 'van'].includes(n.toLowerCase())) ? n.toLowerCase() : n).join(' ')
         patrieSet.add(item.country)
         const fac = this.allCountries.find(c => c.country === item.country)
         if (fac){
@@ -96,9 +95,6 @@ export class FrancobolliService {
       this.catalog.forEach(i => { if (i.issuedCountry) countriesSet.add(i.issuedCountry) } )
       this.countries = Array.from(countriesSet).sort()
 
-      // console.log('Марок: ' + this.catalog.length, ' из ' + this.countries.length + ' стран')
-      // console.log('Авторов: ' + this.authorsMap.size, ' из ' + this.allCountries.filter(c => c.authors).length + ' стран')
-
       this.importFranco = response[1].data().import
       this.removeCatalogItemsFromImport()
 
@@ -114,18 +110,27 @@ export class FrancobolliService {
     if( !name && !this.searchPattern.author) return
     if (name) this.searchPattern.author = name
     this.foundItemsSubject.next( this.catalog.filter(item => item.author === this.searchPattern.author ))
+    this.searchPattern.patria = ''
+    this.searchPattern.issueYear = 0
+    this.searchPattern.issuedCountry = ''
   }
 
   findStampsByCountry(country?: string): void {
     if(!country && !this.searchPattern.issuedCountry) return
     if (country) this.searchPattern.issuedCountry =  country
     this.foundItemsSubject.next( this.catalog.filter(item => item.issuedCountry === this.searchPattern.issuedCountry ))
+    this.searchPattern.patria = ''
+    this.searchPattern.issueYear = 0
+    this.searchPattern.author = ''
   }
 
   findStampsByIssueYear( issueYear?: number): void {
     if( !issueYear && !this.searchPattern.issueYear) return
     if (issueYear) this.searchPattern.issueYear = issueYear
     this.foundItemsSubject.next( this.catalog.filter(item => item.issueYear === this.searchPattern.issueYear ))
+    this.searchPattern.patria = ''
+    this.searchPattern.author = ''
+    this.searchPattern.issuedCountry = ''
   }
 
 
@@ -142,6 +147,9 @@ export class FrancobolliService {
     const authorsFromPatria = this.catalogAuthors.filter(a => a.country === this.searchPattern.patria)
     const stamps = this.catalog.filter(item => authorsFromPatria.find( a => item.author.toLowerCase().includes(a.name.toLowerCase())))
     this.foundItemsSubject.next(stamps)
+    this.searchPattern.author = ''
+    this.searchPattern.issueYear = 0
+    this.searchPattern.issuedCountry = ''
   }
 
   getImageFullPath(folder: string, fileName: string): string {
@@ -193,7 +201,7 @@ export class FrancobolliService {
     this.imageListSubject.next(this.assetsImageList)
   }
 
-  /* saveInCatalog(item: Francobolli): void {
+  saveInCatalog(item: Francobolli): void {
     this.catalog.push(Object.assign({}, item))
     this.removeCatalogItemsFromImport(item)
     this.removeCatalogItemsFromImageList(item)
@@ -202,7 +210,7 @@ export class FrancobolliService {
     this.catalog.filter(i => i.author === item.author)
       .forEach(i => authorItems.push({...i}))
     this.firebaseService.updateAuthor(item.author, authorItems)
-  }*/
+  }
 
   saveAllCatalog(): void {
     this.firebaseService.saveAllCatalog(this.catalog).then()

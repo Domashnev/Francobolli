@@ -13,13 +13,13 @@
                        [searchEnabled]="true" [acceptCustomValue]="false" [showClearButton]="true"
                        [dataSource]="fs.countries"
                        [(value)]="fs.searchPattern.issuedCountry"
-                        (onSelectionChanged)="fs.findStampsByCountry()"></dx-select-box>
+                        (onValueChanged)="fs.findStampsByCountry()"></dx-select-box>
         <dx-select-box #issueYear label="Год выпуска"
                        width="40%"
                        [searchEnabled]="true" [showClearButton]="true"
                        [dataSource]="fs.issueYears"
                        [(value)]="fs.searchPattern.issueYear"
-                       (onSelectionChanged)="fs.findStampsByIssueYear()"></dx-select-box>
+                       (onValueChanged)="fs.findStampsByIssueYear()"></dx-select-box>
       </div>
     </div>
 
