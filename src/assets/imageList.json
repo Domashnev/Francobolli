@@ -9,7 +9,7 @@
   {
     "folder": "page3",
     "images": [
-  "3-100.jpg","3-dunbar.jpg","3-lainer.jpg","3-rilke.jpg","3-thoreau.jpg",
+  "3-dunbar.jpg","3-lainer.jpg","3-rilke.jpg","3-thoreau.jpg",
   "3-102.jpg","3-frost.jpg","3-lee.jpg","3-scott.jpg","3-пиран1.jpg",
   "3-b1.jpg","3-gray.jpg","3-london.jpg","3-sh1.jpg","3-по1.jpg",
   "3-b2.jpg","3-henry.jpg","3-mann.jpg","3-sh2.jpg","3-стейн.jpg",
@@ -122,16 +122,16 @@
       "benet.png", "Camus.png", "castro.png", "Castro2.png", "celestina.png", "Concha Espina.png", "dante.png", "dumas.png", "FFF.png",
       "Gabriel Y Galan.png", "gethe.png", "Gustavo Adolfo Becquer.png", "Hemingway.png", "Hesse.png", "Juan Ramon Jimenez.png", "Lagerkvist.png",
       "Laxness.png", "Lima Alceu Amoroso.png", "Machado.png", "Mario de Andrade.png", "Melville.png", "Miguel de Unamundo.png", "Moliere.png",
-      "Moliere2.png", "Pessoa Fernando.png", "Ribeiro Aquilino.png", "Tolstoj.png", "Verharen Emile.png", "Горький.png", "Горький2.png",
+      "Moliere2.png", "Pessoa Fernando.png", "Ribeiro Aquilino.png", "Tolstoj.png", "Горький.png", "Горький2.png",
       "Мицкевич.png", "Пастернак.png", "чехов.png"
     ]
   },
   {
     "folder": "postbleed/pb5",
     "images": [
-      "Alejo Carpentier.png", "Alfonso Reyes.png", "Belisario Porras.png", "bunin.png", "Domingo Sarmiento.png", "Eugenio Maria de Hostos.png", "Gallegos Romulo.png",
+      "Alejo Carpentier.png", "Alfonso Reyes.png", "Belisario Porras.png", "Domingo Sarmiento.png", "Eugenio Maria de Hostos.png", "Gallegos Romulo.png",
       "Jorge Isaacs.png", "Jose C del Valle.png", "Jose E Rodo.png", "Juan Montalvo.png", "lomonosov.png", "Machado de Assis.png", "Miguel Asturias.png",
-      "Neruda.png", "Palma Ricardo.png", "pasternak.png", "Pedro Urena.png", "Ruben Dario.png", "Сароян.png", "Шолохов.png"
+      "Neruda.png", "Palma Ricardo.png", "pasternak.png", "Pedro Urena.png", "Ruben Dario.png", "Сароян.png"
     ]
   },
   {
@@ -142,7 +142,7 @@
   },
   {
     "folder": "belorussia",
-    "images": [ "cupala.jpg", "cupala2.jpg", "kolas-cupala.jpg", "kolas.jpg", "maka.jpg", "trio.jpg" ]
+    "images": [ "cupala.jpg", "cupala2.jpg",  "kolas.jpg", "maka.jpg", "trio.jpg" ]
   },
   {
     "folder": "kazan",
@@ -164,7 +164,6 @@
   {
     "folder": "appendix",
     "images": [
-      "Albert, Ldestree.jpeg",
       "Frans vancauwelaert.jpeg",
       "pushkinBlock1.jpg",
       "pusnkin22.jpg",

@@ -15,7 +15,8 @@ export class ViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.fs.foundItemsSubject.subscribe(data => {
-      this.viewItems = data.sort( (a, b) => a.author > b.author ? 1 : -1)
+      this.viewItems = data.sort( (a, b) => a.author > b.author ? 1 :
+        (a.author===b.author ? (b.issueYear ?? 0) - (a.issueYear ?? 0) : -1))
     })
   }
 
