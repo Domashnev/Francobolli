@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Gallery } from 'angular-gallery';
 import { Francobolli } from '../../francobolli.model';
 import { FrancobolliService } from '../../francobolli.service';
@@ -10,6 +10,7 @@ import { FrancobolliService } from '../../francobolli.service';
 })
 export class GuardareComponent implements OnInit {
   @Input() items: Francobolli[]
+  @Output() changeFrancobollo: EventEmitter<Francobolli> = new EventEmitter<Francobolli>()
   galleryProperties: any = {}
 
   constructor(private gallery: Gallery,
@@ -23,6 +24,7 @@ export class GuardareComponent implements OnInit {
     if( this.items  ) this.galleryProperties.images = this.items.map(f =>  { return { path: f.imageSrc } })
     this.galleryProperties.index = index;
     this.gallery.load(this.galleryProperties);
+    this .changeFrancobollo.next(this.items[index])
   }
 
 }
