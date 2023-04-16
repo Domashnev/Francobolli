@@ -31,6 +31,7 @@ export class FrancobolliService {
 
   catalog: Francobolli[]
   foundItemsSubject: ReplaySubject<Francobolli[]> = new ReplaySubject<Francobolli[]>(1)
+  editFrancoSubject: Subject<Francobolli>= new Subject<Francobolli>()
 
   importFranco: Francobolli[] = []
   assetsImageList: AssetsImageList[] = []

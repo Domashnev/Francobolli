@@ -1,5 +1,5 @@
 <app-information></app-information>
-<app-agguingere [francobollo]="editFranco"></app-agguingere>
+<button (click)="createNewFranco()">Новая марка</button><app-agguingere></app-agguingere>
 <app-guardare [items]="viewItems" (changeFrancobollo)="changeFrancobolo($event)"></app-guardare>
 <!--
 <div style="display: flex; gap: 5px; margin-bottom: 10px">

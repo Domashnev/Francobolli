@@ -9,7 +9,6 @@ import { Francobolli } from '../../francobolli.model';
 })
 export class ViewComponent implements OnInit {
   viewItems: Francobolli[]=[]
-  editFranco: Francobolli
 
   constructor(public fs: FrancobolliService) {
    }
@@ -22,6 +21,10 @@ export class ViewComponent implements OnInit {
   }
 
   changeFrancobolo(franco: Francobolli) {
-    this.editFranco = franco
+    this.fs.editFrancoSubject.next(franco)
+  }
+
+  createNewFranco() {
+    this.fs.editFrancoSubject.next(new Francobolli())
   }
 }

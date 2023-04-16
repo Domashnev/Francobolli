@@ -1,11 +1,11 @@
-<div style="display: flex; width: 100%">
+<div *ngIf="francobollo" style="display: flex; width: 100%">
 
-  <div style="max-width: 320px; display: flex; flex-direction: column">
-    <div style="font-size: xx-large; font-weight: 500; text-align: center">{{francobollo.author}}</div>
-    <img [src]="francobollo.imageSrc" width="100%" >
+  <div style="width: 260px; max-height: 360px; display: flex; flex-direction: column">
+    <div style="font-weight: 500; text-align: center">{{francobollo.author}}</div>
+    <img [src]="francobollo.imageSrc" width="100%">
   </div>
 
-    <div class="dx-fieldset">
+    <div class="dx-fieldset" [ngClass]='{editBackColor: editStatus}'>
 
       <div class="dx-field">
         <div class="dx-field-label">Автор (фио)</div>
@@ -55,11 +55,23 @@
         </div>
       </div>
 
-      <div class="dx-field">
-        <div class="dx-field-label">Год выпуска</div>
-        <div class="dx-field-value">
+      <div class="row">
+        <div class="dx-field-label" style="width: 20%">Год выпуска</div>
+        <div class="dx-field-value" style="width: 20%">
             <dx-number-box type="fixedPoint" [(value)]="francobollo.issueYear!" [max]="2088" [min]="1850">
             </dx-number-box>
+        </div>
+
+        <div class="dx-field-label" style="width: 15%">Ширина</div>
+        <div class="dx-field-value" style="width: 10%">
+          <dx-number-box [(value)]="francobollo.widthRatio!">
+          </dx-number-box>
+        </div>
+
+        <div class="dx-field-label" style="width: 15%">Высота</div>
+        <div class="dx-field-value" style="width: 10%">
+          <dx-number-box [(value)]="francobollo.heightRatio!">
+          </dx-number-box>
         </div>
       </div>
 
@@ -71,6 +83,7 @@
         </div>
       </div>
 
+
       <div class="dx-field">
         <div class="dx-field-label">Image URL</div>
         <div class="dx-field-value">
@@ -80,7 +93,9 @@
       </div>
 
       <div class="dx-field">
-        <dx-button text="Сохранить" type="success" style="margin: 10px; width: 50%"
+        <dx-button [text]="editStatus ? 'Сохранить' : 'Добавить'"
+                   [type]="editStatus ? 'success' : 'danger'"
+                   style="margin: 10px; width: 50%"
                    (onClick)="saveItem()"
                    [disabled]="!francobollo.imageSrc || !francobollo.author || !francobollo.issuedCountry">
         </dx-button>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Francobolli } from '../../francobolli.model';
 import { FrancobolliService } from '../../francobolli.service';
 
@@ -8,29 +8,30 @@ import { FrancobolliService } from '../../francobolli.service';
   styleUrls: ['./agguingere.component.css']
 })
 export class AgguingereComponent implements OnInit {
-  @Input() francobollo: Francobolli
   @Output() setAuthorFilter: EventEmitter<string> = new EventEmitter<string>()
-
+  francobollo: Francobolli
   saveCatalogFlag: boolean
   newAuthorShow = false
+  editStatus: boolean
 
   constructor(public fs: FrancobolliService) {}
 
   ngOnInit(): void {
-    if ( !this.francobollo) this.francobollo = new Francobolli()
+    this.fs.editFrancoSubject.subscribe( franco => {
+      this.francobollo = franco
+      this.editStatus = franco.author !== ''
+    })
   }
 
   saveItem() {
     this.francobollo.removeEmptyProperties()
-    // this.fs.saveInCatalog(this.francobollo)
-    this.fs.catalog.push(Object.assign({},this.francobollo))
-    this.francobollo.clear()
+    if ( !this.editStatus ) this.fs.catalog.push(this.francobollo)
     this.saveCatalogFlag = true
   }
 
   authorChanged() {
-    this.setAuthorFilter.emit(this.francobollo.author)
-    this.fs.findAuthorInCatalog(this.francobollo.author)
+//    this.setAuthorFilter.emit(this.francobollo.author)
+ //   this.fs.findAuthorInCatalog(this.francobollo.author)
   }
 
   saveCatalog() {
@@ -38,7 +39,4 @@ export class AgguingereComponent implements OnInit {
     this.saveCatalogFlag = false
   }
 
-  showAddAuthor() {
-
-  }
 }

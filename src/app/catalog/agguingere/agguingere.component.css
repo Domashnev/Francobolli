@@ -2,3 +2,7 @@
   margin: 10px !important;
   width: 600px!important;
 }
+
+.editBackColor {
+  background: lightgreen;
+}
