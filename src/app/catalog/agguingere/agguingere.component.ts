@@ -9,8 +9,7 @@ import { FrancobolliService } from '../../francobolli.service';
 })
 export class AgguingereComponent implements OnInit {
   @Output() setAuthorFilter: EventEmitter<string> = new EventEmitter<string>()
-  francobollo: Francobolli
-  saveCatalogFlag: boolean
+  francobollo: Francobolli | undefined
   newAuthorShow = false
   editStatus: boolean
 
@@ -24,19 +23,15 @@ export class AgguingereComponent implements OnInit {
   }
 
   saveItem() {
-    this.francobollo.removeEmptyProperties()
-    if ( !this.editStatus ) this.fs.catalog.push(this.francobollo)
-    this.saveCatalogFlag = true
+    // if( this.francobollo) this.francobollo.removeEmptyProperties()
+    if ( !this.editStatus ) this.fs.catalog.push(Object.assign({},this.francobollo))
+    this.francobollo = undefined
+    this.fs.saveAllCatalog()
   }
 
   authorChanged() {
 //    this.setAuthorFilter.emit(this.francobollo.author)
  //   this.fs.findAuthorInCatalog(this.francobollo.author)
-  }
-
-  saveCatalog() {
-    this.fs.saveAllCatalog()
-    this.saveCatalogFlag = false
   }
 
 }

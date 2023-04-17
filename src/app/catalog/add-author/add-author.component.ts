@@ -16,7 +16,8 @@ export class AddAuthorComponent implements OnInit {
   }
 
   addAuthorToCatalog() {
-    this.fs.catalogAuthors.push(this.newAuthor)
+    this.fs.catalogAuthors.push(Object.assign({}, this.newAuthor))
+    this.fs.saveAuthors()
     this.newAuthor = { name: '', country: ''}
   }
 }
