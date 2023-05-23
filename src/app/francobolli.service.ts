@@ -3,9 +3,9 @@ import {HttpClient} from "@angular/common/http";
 import {catchError, Observable, forkJoin, Subject, BehaviorSubject, ReplaySubject} from "rxjs";
 import {
   AssetsImageList,
-  Author,
+  Author, ContinentCountryAuthors,
   CountriesByContinent,
-  CountryAndContinent,
+  CountryAndContinent, CountryAuthors,
   Francobolli
 } from './francobolli.model';
 import {FirebaseService} from "./firebase.service";
@@ -103,6 +103,8 @@ export class FrancobolliService {
       this.assetsImageList.forEach(fold => fold.images = fold.images.map(img=> this.getImageFullPath(fold.folder, img)))
       this.removeCatalogItemsFromImageList()
       this.imageListSubject.next(this.assetsImageList)
+
+      console.log(this.getContinentsData())
     })
 
   }
@@ -172,6 +174,37 @@ export class FrancobolliService {
   prepareAllCountries(): void {
     this.allCountries = []
     CountriesByContinent.forEach(cont =>  cont.countries.forEach(country => this.allCountries.push( { id: this.allCountries.length+1, continent: cont.continent, country })))
+  }
+
+  getContinentsData(): ContinentCountryAuthors[] {
+    const continents: ContinentCountryAuthors[] = []
+    const uniqueContinent = new Set(this.allCountries.filter(c => c.authors).map(c => c.continent))
+
+    uniqueContinent.forEach(continent => {
+      const countries: CountryAuthors[] = this.allCountries.filter(c => c.continent === continent && c.authors?.length)
+        .map( c => {
+          const countryAuthors : CountryAuthors = {
+            country: c.country,
+            authorAmount:
+                c.authors!.map( a=> { return {author: a, amount: this.catalog.filter(s => s.author.includes(a) ).length } })
+                .sort((a1, a2) => {
+                  if (a1.amount !== a2.amount) {
+                    return a2.amount - a1.amount
+                  } else
+                  return a2.author > a1.author ? -1 : 1
+                }),
+            stampsTotal: 0
+          }
+          return countryAuthors
+        })
+      continents.push({
+        continent, data: countries,
+        continentAuthorsTotal: countries.reduce((acc, c) => acc += c.authorAmount.length, 0),
+        continentStampsTotal: countries.reduce((acc, c) =>
+          acc += c.authorAmount.reduce((stampsAcc, author) => stampsAcc += author.amount, 0), 0)
+      })
+    })
+    return continents
   }
 
   removeCatalogItemsFromImport(item?: Francobolli): void {

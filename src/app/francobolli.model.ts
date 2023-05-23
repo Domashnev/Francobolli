@@ -69,6 +69,22 @@ export interface CountryAndContinent {
   authors?: string[];
 }
 
+export interface ContinentCountryAuthors {
+  continent: string;
+  data: CountryAuthors[];
+  continentStampsTotal?: number;
+  continentAuthorsTotal?: number;
+}
+
+export interface CountryAuthors {
+  country: string;
+  authorAmount: {
+    author: string;
+    amount: number;
+  }[];
+  stampsTotal: number;
+}
+
 export const CountriesByContinent: CountriesAndContinent[] = [
   {
     continent: "Русские",
