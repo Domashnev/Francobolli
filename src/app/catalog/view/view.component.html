@@ -1,36 +1,3 @@
 <app-information></app-information>
 <button (click)="createNewFranco()">Новая марка</button><app-agguingere></app-agguingere>
 <app-guardare [items]="viewItems" (changeFrancobollo)="changeFrancobolo($event)"></app-guardare>
-<!--
-<div style="display: flex; gap: 5px; margin-bottom: 10px">
-  <dx-autocomplete #authorSearch label="Автор" placeholder="Ищем по фамилии и имени..."
-                   [dataSource]="fs.catalogAuthors"
-                   valueExpr="name"
-                   [width]="'200px'"
-                   [showClearButton]="true"
-                   (onValueChanged)="lookForAuthor($event.value, countrySelect.value)"></dx-autocomplete>
-
-  <dx-select-box #patriaSelect
-                 [searchEnabled]="true" [acceptCustomValue]="false"
-                 [showClearButton]="true"
-                 label="Родина" placeholder="Выберите из какой страны"
-                 [width]="'200px'"
-                 [dataSource]="fs.patrie"
-                 (onValueChanged)="lookForAuthorsByPatria($event.value)"></dx-select-box>
-  <dx-select-box #countrySelect
-                 [searchEnabled]="true"
-                 [acceptCustomValue]="false"
-                 [showClearButton]="true"
-                 label="Страна выпуска"
-                 placeholder="Выберите страну"
-                 [width]="'200px'"
-                 [dataSource]="fs.countries"
-                 (onValueChanged)="lookForAuthor(authorSearch.value, $event.value)"></dx-select-box>
-</div>
--->
-
-<!--dx-autocomplete #countrySearch label="Cтрана" placeholder="Страна выпуска марки..."
-                 [dataSource]="fs.countries"
-                 [width]="'200px'" style="margin: 10px"
-                 (onValueChanged)="lookForAuthor(authorSearch.value, $event.value)"></dx-autocomplete-->
-
