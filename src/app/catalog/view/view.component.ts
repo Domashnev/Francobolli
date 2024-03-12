@@ -17,10 +17,10 @@ export class ViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.url.subscribe(([url]) => {
-      this.fs.currentCatalog = ''
+      this.fs.currentCatalogName = ''
       if( url && url.path.includes('volley') ) {
         this.fs.catalogAuthors = []
-        this.fs.currentCatalog = url.path
+        this.fs.currentCatalogName = url.path
         this.fs.getOtherCatalog(url.path)
       } // console.log(path); // e.g. /products// console.log(parameters); // e.g. { id: 'x8klP0' }
     });

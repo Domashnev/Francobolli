@@ -7,7 +7,7 @@
 
     <div class="dx-fieldset" [ngClass]='{editBackColor: editStatus}'>
 
-      <div class="dx-field">
+      <div *ngIf="!fs.currentCatalogName" class="dx-field">
         <div class="dx-field-label">Автор (фио)</div>
         <div class="dx-field-value">
           <dx-select-box
@@ -31,8 +31,16 @@
 
       </div>
 
-      <div *ngIf="newAuthorShow" class="border-1">
+      <div *ngIf="newAuthorShow && !fs.currentCatalogName" class="border-1">
         <app-add-author></app-add-author>
+      </div>
+
+      <div *ngIf="fs.currentCatalogName" class="dx-field">
+        <div class="dx-field-label">Событие</div>
+        <div class="dx-field-value">
+          <dx-text-box [(value)]="francobollo.author!">
+          </dx-text-box>
+        </div>
       </div>
 
       <div class="dx-field">

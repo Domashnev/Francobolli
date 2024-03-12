@@ -39,7 +39,7 @@ export class FrancobolliService {
   assetsImageList: AssetsImageList[] = []
   imageListSubject: Subject<AssetsImageList[]> = new Subject()
   searchPattern: SearchPattern = {author: ''}
-  currentCatalog: string
+  currentCatalogName: string
 
   constructor(private http: HttpClient,
               private firebaseService: FirebaseService) {
@@ -250,7 +250,7 @@ export class FrancobolliService {
   }
 
   saveAllCatalog(): void {
-    this.firebaseService.saveAllCatalog(this.catalog, this.currentCatalog).then()
+    this.firebaseService.saveAllCatalog(this.catalog, this.currentCatalogName).then()
   }
 
   saveAuthors(): void {

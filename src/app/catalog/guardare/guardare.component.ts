@@ -21,10 +21,10 @@ export class GuardareComponent implements OnInit {
 
 
   showGallery(index: number = 0) {
-   /* if( this.items  ) this.galleryProperties.images = this.items.map(f =>  { return { path: f.imageSrc } })
+    if( this.items  ) this.galleryProperties.images = this.items.map(f =>  { return { path: f.imageSrc } })
     this.galleryProperties.index = index;
-    this.gallery.load(this.galleryProperties);*/
-    this .changeFrancobollo.next(this.items[index])
+    this.gallery.load(this.galleryProperties);
+    // this.changeFrancobollo.next(this.items[index])
   }
 
 }
