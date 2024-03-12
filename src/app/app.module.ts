@@ -39,6 +39,7 @@ const routes: Routes = [
       {path: 'import', component: ImportComponent },
       {path: 'catalog', component: WholeCatalogComponent },
       {path: 'authors', component: AuthorsComponent },
+      {path: 'volley', component: ViewComponent },
       {path: '', component: ViewComponent}
     ]
   },

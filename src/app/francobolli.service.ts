@@ -9,6 +9,8 @@ import {
   Francobolli
 } from './francobolli.model';
 import {FirebaseService} from "./firebase.service";
+import DevExpress from 'devextreme'
+import data = DevExpress.data
 
 export interface SearchPattern {
   patria?: string;
@@ -37,6 +39,7 @@ export class FrancobolliService {
   assetsImageList: AssetsImageList[] = []
   imageListSubject: Subject<AssetsImageList[]> = new Subject()
   searchPattern: SearchPattern = {author: ''}
+  currentCatalog: string
 
   constructor(private http: HttpClient,
               private firebaseService: FirebaseService) {
@@ -51,7 +54,7 @@ export class FrancobolliService {
     ]).subscribe( response => {
       const countriesSet = new Set<string>()
 
-      this.catalog = response[0].filter(f => !['Волейбол', 'Pallavolo', 'Pinocchio'].includes(f.author))
+      this.catalog = response[0].filter(f => !['Pinocchio'].includes(f.author))
       this.foundItemsSubject.next( this.shuffle(this.catalog).slice(0, 50) )
 
       this.catalogAuthors = response[3].sort((a1, a2) => a1.name > a2.name ? 1 : -1)
@@ -247,7 +250,7 @@ export class FrancobolliService {
   }
 
   saveAllCatalog(): void {
-    this.firebaseService.saveAllCatalog(this.catalog).then()
+    this.firebaseService.saveAllCatalog(this.catalog, this.currentCatalog).then()
   }
 
   saveAuthors(): void {
@@ -292,5 +295,16 @@ export class FrancobolliService {
       }
     }
     return arr;
+  }
+
+  getOtherCatalog(theme: string): void {
+    this.firebaseService.getCatalogo(theme)
+      .subscribe(data => {
+        const countriesSet = new Set<string>()
+        this.catalog = data
+        this.catalog.forEach(i => { if (i.issuedCountry) countriesSet.add(i.issuedCountry) } )
+        this.countries = Array.from(countriesSet).sort()
+        this.foundItemsSubject.next( this.shuffle(this.catalog))
+      })
   }
 }

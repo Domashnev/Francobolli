@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, map } from 'rxjs';
+import {Observable, map, of} from 'rxjs'
 import { Author, Francobolli } from "./francobolli.model";
 
 @Injectable({providedIn:  'root'})
@@ -23,9 +23,13 @@ export class FirebaseService {
       .update(updateData).then()
   }
 
-  saveAllCatalog(catalog: Francobolli[]): Promise<any> {
-    return this.firestore.collection('stamps').doc('catalogo')
-      .update({ authors: catalog })
+  saveAllCatalog(catalog: Francobolli[], theme?: string): Promise<any> {
+    if ( confirm('Сохранить каталог ' + (theme ?? 'ПИСАТЕЛИ') + '\nРазмер: ' + catalog.length ) ) {
+      return this.firestore.collection('stamps').doc(theme ?? 'catalogo')
+        .update({ authors: catalog })
+    }
+    return Promise.resolve()
+
   }
 
   getCatalog(): Observable<Francobolli[]> {
@@ -42,8 +46,8 @@ export class FirebaseService {
       )
   }
 
-  getCatalogo(): Observable<Francobolli[]> {
-    return this.firestore.collection('stamps').doc('catalogo').get()
+  getCatalogo(theme?: string): Observable<Francobolli[]> {
+    return this.firestore.collection('stamps').doc( theme ?? 'catalogo').get()
       .pipe(
         map( items => {
           const data = items.data() as any
