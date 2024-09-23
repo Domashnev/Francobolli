@@ -250,7 +250,7 @@ export class FrancobolliService {
   }
 
   saveAllCatalog(): void {
-    this.firebaseService.saveAllCatalog(this.catalog, this.currentCatalogName).then()
+    this.firebaseService.saveAllCatalog(this.catalog, this.currentCatalogName)
   }
 
   saveAuthors(): void {

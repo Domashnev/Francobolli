@@ -25,7 +25,7 @@ export class AgguingereComponent implements OnInit {
   saveItem() {
     // if( this.francobollo) this.francobollo.removeEmptyProperties()
     if ( !this.editStatus ) this.fs.catalog.push(Object.assign({},this.francobollo))
-    this.francobollo = undefined
+    if (this.francobollo) this.francobollo.author = ''
     this.fs.saveAllCatalog()
   }
 

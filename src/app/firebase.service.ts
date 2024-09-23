@@ -23,13 +23,13 @@ export class FirebaseService {
       .update(updateData).then()
   }
 
-  saveAllCatalog(catalog: Francobolli[], theme?: string): Promise<any> {
-    if ( confirm('Сохранить каталог ' + (theme ?? 'ПИСАТЕЛИ') + '\nРазмер: ' + catalog.length ) ) {
-      return this.firestore.collection('stamps').doc(theme ?? 'catalogo')
+  saveAllCatalog(catalog: Francobolli[], theme?: string): void {
+  //  if ( confirm('Сохранить каталог ' + (theme ?? 'ПИСАТЕЛИ') + '\nРазмер: ' + catalog.length ) ) {
+      this.firestore.collection('stamps').doc(theme ? theme : 'catalogo')
         .update({ authors: catalog })
-    }
-    return Promise.resolve()
-
+        .then(() => alert('Каталог сохранен'))
+     //   .catch(err => alert(err.message()))
+//    }
   }
 
   getCatalog(): Observable<Francobolli[]> {
