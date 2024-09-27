@@ -55,7 +55,8 @@ export class FrancobolliService {
       const countriesSet = new Set<string>()
 
       this.catalog = response[0].filter(f => !['Pinocchio'].includes(f.author))
-      this.foundItemsSubject.next( this.shuffle(this.catalog).slice(0, 50) )
+        .sort((f1, f2) => (f2.timestamp ?? 0)  - (f1.timestamp ?? 0))
+      this.foundItemsSubject.next( this.catalog )
 
       this.catalogAuthors = response[3].sort((a1, a2) => a1.name > a2.name ? 1 : -1)
       const patrieSet = new Set<string>()
@@ -66,7 +67,7 @@ export class FrancobolliService {
         if (fac){
           fac.authors ? fac.authors.push(item.name) : fac.authors = [item.name]
         } else {
-          console.log('Не найдена страна ' + item.country, item.name)
+          console.log('Не найдена страна ' + item.country, item)
         }
       })
       this.patrie = Array.from(patrieSet).sort()
@@ -74,19 +75,20 @@ export class FrancobolliService {
       this.allCountries.sort((c1, c2) => (c2.authors ? c2.authors.length: 0) - (c1.authors ? c1.authors.length : 0))
 
       this.authorsMap.set('UNDEFINED', [])
-      this.catalog.forEach(item => {
-         const auth = this.catalogAuthors.find(a => item.author.includes(a.name))
-         if ( !auth ) {
+      this.catalog.forEach((item, index) => {
+        delete item['stampKey'];
+        const auth = this.catalogAuthors.find(a => item.author.includes(a.name))
+        if ( !auth ) {
            this.authorsMap.get('UNDEFINED')?.push(item)
-         }else if (this.authorsMap.has(auth.name)) {
+        }else if (this.authorsMap.has(auth.name)) {
            this.authorsMap.get(auth.name)?.push(item)
-         } else {
+        } else {
            this.authorsMap.set(auth.name, [item])
-         }
+        }
 
-         if (item.issueYear && !this.issueYears.includes(item.issueYear)){
+        if (item.issueYear && !this.issueYears.includes(item.issueYear)){
            this.issueYears.push(item.issueYear)
-         }
+        }
       })
       this.issueYears = this.issueYears.sort()
 
@@ -94,7 +96,6 @@ export class FrancobolliService {
         console.log('Не найдены авторы ', this.authorsMap.get('UNDEFINED'))
       }
       if( this.authorsMap.has('UNDEFINED') && this.authorsMap.get('UNDEFINED')?.length === 0 ) this.authorsMap.delete('UNDEFINED')
-
 
       this.catalog.forEach(i => { if (i.issuedCountry) countriesSet.add(i.issuedCountry) } )
       this.countries = Array.from(countriesSet).sort()
@@ -107,7 +108,7 @@ export class FrancobolliService {
       this.removeCatalogItemsFromImageList()
       this.imageListSubject.next(this.assetsImageList)
 
-      console.log(this.getContinentsData())
+      // console.log(this.getContinentsData())
     })
 
   }
@@ -124,7 +125,9 @@ export class FrancobolliService {
   findStampsByCountry(country?: string): void {
     if(!country && !this.searchPattern.issuedCountry) return
     if (country) this.searchPattern.issuedCountry =  country
-    this.foundItemsSubject.next( this.catalog.filter(item => item.issuedCountry === this.searchPattern.issuedCountry ))
+    this.foundItemsSubject.next(
+      this.catalog.filter(item => item.issuedCountry === this.searchPattern.issuedCountry )
+        .sort((f1, f2) => (f2.issueYear ?? 0)  - (f1.issueYear ?? 0)))
     this.searchPattern.patria = ''
     this.searchPattern.issueYear = 0
     this.searchPattern.author = ''
@@ -152,6 +155,8 @@ export class FrancobolliService {
 
     const authorsFromPatria = this.catalogAuthors.filter(a => a.country === this.searchPattern.patria)
     const stamps = this.catalog.filter(item => authorsFromPatria.find( a => item.author.toLowerCase().includes(a.name.toLowerCase())))
+      .sort((f1, f2) => (f1.issueYear ?? 0)  - (f2.issueYear ?? 0))
+    console.log(stamps)
     this.foundItemsSubject.next(stamps)
     this.searchPattern.author = ''
     this.searchPattern.issueYear = 0
@@ -250,6 +255,8 @@ export class FrancobolliService {
   }
 
   saveAllCatalog(): void {
+    this.catalog.forEach(i => delete i['__KEY__'])
+    // console.log(this.catalog)
     this.firebaseService.saveAllCatalog(this.catalog, this.currentCatalogName)
   }
 
@@ -304,7 +311,7 @@ export class FrancobolliService {
         this.catalog = data
         this.catalog.forEach(i => { if (i.issuedCountry) countriesSet.add(i.issuedCountry) } )
         this.countries = Array.from(countriesSet).sort()
-        this.foundItemsSubject.next( this.shuffle(this.catalog))
+        this.foundItemsSubject.next( this.catalog)
       })
   }
 }

@@ -27,8 +27,8 @@ export class FirebaseService {
   //  if ( confirm('Сохранить каталог ' + (theme ?? 'ПИСАТЕЛИ') + '\nРазмер: ' + catalog.length ) ) {
       this.firestore.collection('stamps').doc(theme ? theme : 'catalogo')
         .update({ authors: catalog })
-        .then(() => alert('Каталог сохранен'))
-     //   .catch(err => alert(err.message()))
+        .then()
+        .catch(err => alert(err.message()))
 //    }
   }
 
@@ -51,10 +51,10 @@ export class FirebaseService {
       .pipe(
         map( items => {
           const data = items.data() as any
-          let catalog: Francobolli[] = []
-          for (const author in data) {
+          let catalog: Francobolli[] = data.authors
+          /*for (const author in data) {
             catalog = catalog.concat(data[author])
-          }
+          }*/
           return catalog
         })
       )

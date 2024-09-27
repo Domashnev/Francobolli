@@ -10,14 +10,15 @@
               [dataSource]="items"
               direction="vertical"
               showScrollbar="onHover"
-              [baseItemHeight]="150"  [itemMargin]="10"
+              [baseItemHeight]="180"  [itemMargin]="10"
               itemTemplate="list-item"
               (onItemContextMenu)="changeFrancobollo.next(items[$event.itemIndex])"
               (onItemClick)="showGallery($event.itemIndex)">
 
-  <div *dxTemplate="let data of 'list-item'; let index = index" style="display: flex; flex-direction: column; background: darkslategray">
-    <img [src]="data.imageSrc" >
-    <div style="font-weight: 400; color: white">
+  <div *dxTemplate="let data of 'list-item'; let index = index"
+       style="height: 100%; display: flex; flex-direction: column; background: darkslategray">
+    <img [src]="data.imageSrc">
+    <div style="font-size: smaller; font-weight: 400; color: white">
       {{fs.searchPattern.author ? data.issuedCountry + ' ' + (data.issueYear ?? '') : data.author}}
     </div>
   </div>

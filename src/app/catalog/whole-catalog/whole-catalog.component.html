@@ -1,7 +1,8 @@
 <dx-button text="Сохранить каталог" icon="save" (onClick)="saveCatalog()"></dx-button>
 <dx-data-grid [dataSource]="fs.catalog"
               [showRowLines]="true" [showColumnLines]="true" [showBorders]="true"
-              [columnAutoWidth]="true" [wordWrapEnabled]="true">
+              [columnAutoWidth]="true" [wordWrapEnabled]="true"
+              >
   <dxo-header-filter [visible]="true"></dxo-header-filter>
   <dxo-filter-row [visible]="true"></dxo-filter-row>
   <dxo-selection mode="single"></dxo-selection>
@@ -11,8 +12,8 @@
   [startEditAction]="'click'"></dxo-editing>
 
   <dxi-column caption="Марка" cellTemplate="imageFrancobollo" allowEditing="false"></dxi-column>
-  <dxi-column dataField="author" caption="Автор" dataType="string">
-    <!--dxo-lookup [dataSource]="fs.catalogAuthors" displayExpr="name" valueExpr="name" ></dxo-lookup-->
+  <dxi-column dataField="author" caption="Автор" dataType="string" width="200">
+    <dxo-lookup [dataSource]="fs.catalogAuthors" displayExpr="name" valueExpr="name" ></dxo-lookup>
   </dxi-column>
   <!--dxi-column dataField="patria" caption="Родина" dataType="string"></dxi-column-->
   <dxi-column dataField="issuedCountry" caption="Страна выпуска" dataType="string">
@@ -24,7 +25,8 @@
   <dxi-column dataField="heightRatio" caption="Масштаб по высоте" dataType="number"></dxi-column>
 
   <dxi-column dataField="description" caption="Описание" dataType="string"></dxi-column>
-  <dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column>
+  <dxi-column dataField="timestamp" caption="Дата добавления"></dxi-column>
+  <!--dxi-column dataField="purchaseDate" caption="Дата поступления" dataType="date"></dxi-column-->
 
 
   <div *dxTemplate="let item of 'imageFrancobollo'">

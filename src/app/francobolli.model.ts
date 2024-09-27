@@ -1,4 +1,7 @@
 export class Francobolli {
+  index?: number;
+  timestamp?: number;
+
   imageSrc: string;
   author: string;
   issuedCountry: string;
@@ -15,6 +18,8 @@ export class Francobolli {
   heightRatio?: number;
 
   patria?: string;
+  __KEY__?: string;
+  stampKey?: string;
 
   constructor(imageSrc?: string, author?: string, country?: string ) {
     this.imageSrc = imageSrc ?? ''

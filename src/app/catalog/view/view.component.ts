@@ -25,8 +25,16 @@ export class ViewComponent implements OnInit {
       } // console.log(path); // e.g. /products// console.log(parameters); // e.g. { id: 'x8klP0' }
     });
     this.fs.foundItemsSubject.subscribe(data => {
-      this.viewItems = data.sort( (a, b) => a.author > b.author ? 1 :
-        (a.author===b.author ? (b.issueYear ?? 0) - (a.issueYear ?? 0) : -1))
+      this.viewItems = data
+      if(false && data.length < 200)
+        this.viewItems = this.viewItems.sort( (a, b) =>
+          a.author > b.author ? 1 :
+         (a.author===b.author ?
+          (a.issuedCountry > b.issuedCountry ? 1 :
+            (a.issuedCountry === b.issuedCountry ? (a.issueYear ?? 0) - (b.issueYear ?? 0) : -1)
+          ) : -1
+         )
+        )
     })
   }
 
