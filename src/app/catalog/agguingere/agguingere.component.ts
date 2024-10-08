@@ -18,24 +18,22 @@ export class AgguingereComponent implements OnInit {
   ngOnInit(): void {
     this.fs.editFrancoSubject.subscribe( franco => {
       this.francobollo = franco
-      this.editStatus = franco.author !== ''
-      console.log(this.francobollo)
+      this.editStatus = !!franco.author && franco.author !== ''
     })
   }
 
   saveItem() {
     // if( this.francobollo) this.francobollo.removeEmptyProperties()
     if ( !this.francobollo?.timestamp ){
-      // let maxIndex: number = 0
-      // this.fs.catalog.forEach( f => maxIndex = maxIndex < (f.index ?? 0) ? (f.index ?? 0) : maxIndex )
-     //  this.francobollo!.index = maxIndex + 1
       this.francobollo!.timestamp = new Date().getTime()
     }
 
     if ( !this.editStatus ) this.fs.catalog.push(Object.assign({},this.francobollo))
-    if (this.francobollo) {
+    if (!this.editStatus && this.francobollo) {
       this.francobollo.author = ''
       this.francobollo.description = ''
+    } else {
+      this.francobollo = undefined
     }
     this.fs.saveAllCatalog()
   }
