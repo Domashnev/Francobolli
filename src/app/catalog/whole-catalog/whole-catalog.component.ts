@@ -19,4 +19,7 @@ export class WholeCatalogComponent implements OnInit {
   }
 
 
+  addCustomItem(event: any) {
+    console.log(event)
+  }
 }

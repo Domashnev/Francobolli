@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import { Gallery } from 'angular-gallery';
+import { Gallery, GalleryProperties } from 'angular-gallery';
 import { Francobolli } from '../../francobolli.model';
 import { FrancobolliService } from '../../francobolli.service';
 

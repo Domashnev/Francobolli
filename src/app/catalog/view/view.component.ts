@@ -26,15 +26,7 @@ export class ViewComponent implements OnInit {
     });
     this.fs.foundItemsSubject.subscribe(data => {
       this.viewItems = data
-      if(false && data.length < 200)
-        this.viewItems = this.viewItems.sort( (a, b) =>
-          a.author > b.author ? 1 :
-         (a.author===b.author ?
-          (a.issuedCountry > b.issuedCountry ? 1 :
-            (a.issuedCountry === b.issuedCountry ? (a.issueYear ?? 0) - (b.issueYear ?? 0) : -1)
-          ) : -1
-         )
-        )
+      // console.log(data)
     })
   }
 

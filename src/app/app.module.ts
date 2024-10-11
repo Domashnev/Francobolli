@@ -15,8 +15,8 @@ import {
   DxNumberBoxModule,
   DxTextAreaModule,
   DxButtonModule,
-  DxValidatorModule, DxLookupModule, DxTreeListModule,
-} from 'devextreme-angular';
+  DxValidatorModule, DxLookupModule, DxTreeListModule, DxTagBoxModule
+} from 'devextreme-angular'
 import { IvyGalleryModule } from 'angular-gallery';
 import { AgguingereComponent } from './catalog/agguingere/agguingere.component';
 import { environment } from '../environments/environment';
@@ -66,6 +66,7 @@ const routes: Routes = [
     DxGalleryModule, DxTileViewModule, DxDataGridModule, DxTabsModule, DxTreeListModule,
     DxFormModule, DxSelectBoxModule, DxAutocompleteModule, DxTextBoxModule, DxLookupModule,
     DxNumberBoxModule, DxTextAreaModule, DxButtonModule, DxValidatorModule, DxoValidationModule,
+    DxTagBoxModule,
     IvyGalleryModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
