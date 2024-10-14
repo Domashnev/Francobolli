@@ -1,0 +1,30 @@
+
+<dx-tabs
+         [showNavButtons] ="true"
+         [dataSource]="fs.authorTree"
+         itemTemplate="item"
+         (onItemClick)="onItemClick($event, 0)">
+  <div *dxTemplate="let data of 'item';">
+    {{data[levelFields[0].name]}} {{data[levelFields[0].count]}}
+  </div>
+</dx-tabs>
+
+<dx-tabs *ngIf="currentContinent"
+  [showNavButtons] ="true"
+  [dataSource]="currentContinent"
+  itemTemplate="item"
+  (onItemClick)="onItemClick($event, 1)">
+  <div *dxTemplate="let data of 'item';">
+    {{data[levelFields[1].name]}} {{data[levelFields[1].count]}}
+  </div>
+</dx-tabs>
+
+<dx-tabs *ngIf="currentCountry"
+  [showNavButtons] ="true"
+  [dataSource]="currentCountry"
+  itemTemplate="item"
+  (onItemClick)="onItemClick($event, 2)">
+  <div *dxTemplate="let data of 'item';">
+    {{data[levelFields[2].name]}} {{data[levelFields[2].count]}}
+  </div>
+</dx-tabs>

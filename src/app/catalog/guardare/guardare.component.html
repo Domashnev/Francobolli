@@ -19,7 +19,7 @@
        style="height: 100%; display: flex; flex-direction: column; background: darkslategray">
     <img [src]="data.imageSrc">
     <div style="font-size: smaller; font-weight: 400; color: white">
-      {{fs.searchPattern.author ? data.issuedCountry + ' ' + (data.issueYear ?? '') : data.author}}
+      {{fs.searchPattern.author ? data.issuedCountry : data.author}} {{data.issueYear ?? ''}}
     </div>
   </div>
 </dx-tile-view>

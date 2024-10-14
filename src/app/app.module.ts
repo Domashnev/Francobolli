@@ -33,6 +33,7 @@ import { NewAuthorComponent } from './catalog/authors/new-author/new-author.comp
 import { AuthorStampsComponent } from './catalog/authors/author-stamps/author-stamps.component';
 import { InformationComponent } from './catalog/information/information.component';
 import { AddAuthorComponent } from './catalog/add-author/add-author.component';
+import { TabsViewComponent } from './catalog/view/tabs-view/tabs-view.component';
 
 const routes: Routes = [
   {path: '', children: [
@@ -58,6 +59,7 @@ const routes: Routes = [
     AuthorStampsComponent,
     InformationComponent,
     AddAuthorComponent,
+    TabsViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,7 @@ const routes: Routes = [
     DxGalleryModule, DxTileViewModule, DxDataGridModule, DxTabsModule, DxTreeListModule,
     DxFormModule, DxSelectBoxModule, DxAutocompleteModule, DxTextBoxModule, DxLookupModule,
     DxNumberBoxModule, DxTextAreaModule, DxButtonModule, DxValidatorModule, DxoValidationModule,
-    DxTagBoxModule,
+    DxTabsModule,
     IvyGalleryModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,

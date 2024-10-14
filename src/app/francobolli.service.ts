@@ -9,8 +9,6 @@ import {
   Francobolli
 } from './francobolli.model';
 import {FirebaseService} from "./firebase.service";
-import DevExpress from 'devextreme'
-import data = DevExpress.data
 
 export interface SearchPattern {
   patria?: string;
@@ -23,6 +21,7 @@ export interface SearchPattern {
 export class FrancobolliService {
   allCountries: CountryAndContinent[]
   continentCountries = CountriesByContinent
+  authorTree: ContinentCountryAuthors[]
 
   countries: string[] = [] // Страны выпустившие марки
   patrie: string[] = []    // Родины авторов
@@ -32,20 +31,22 @@ export class FrancobolliService {
   catalogAuthors: Author[] = []
 
   catalog: Francobolli[]
-  foundItemsSubject: ReplaySubject<Francobolli[]> = new ReplaySubject<Francobolli[]>(1)
+  foundItemsSubject: BehaviorSubject<Francobolli[]> = new BehaviorSubject<Francobolli[]>([])
   editFrancoSubject: Subject<Francobolli>= new Subject<Francobolli>()
 
   importFranco: Francobolli[] = []
   assetsImageList: AssetsImageList[] = []
   imageListSubject: Subject<AssetsImageList[]> = new Subject()
   searchPattern: SearchPattern = {author: ''}
-  currentCatalogName: string
+  currentCatalogName: string = ''
 
   constructor(private http: HttpClient,
               private firebaseService: FirebaseService) {
 
-    this.prepareAllCountries()
+  }
 
+  getMainCatalog(): void {
+    this.prepareAllCountries()
     forkJoin([
       this.firebaseService.getCatalogo(),
       // this.firebaseService.getImportStamps(),
@@ -109,7 +110,7 @@ export class FrancobolliService {
       // this.removeCatalogItemsFromImageList()
       // this.imageListSubject.next(this.assetsImageList)
 
-      // console.log(this.getContinentsData())
+      this.authorTree = this.getContinentsData()
     })
 
   }
@@ -126,15 +127,18 @@ export class FrancobolliService {
     this.searchPattern.issuedCountry = ''
   }
 
-  findStampsByCountry(country?: string): void {
+  findStampsByCountry(country?: string | string[]): void {
     if(!country && !this.searchPattern.issuedCountry) {
-      // this.foundItemsSubject.next(this.catalog)
       return
     }
-    if (country) this.searchPattern.issuedCountry =  country
+    if (country && typeof country === 'string') this.searchPattern.issuedCountry =  country
     this.foundItemsSubject.next(
       this.catalog.filter(item => item.issuedCountry === this.searchPattern.issuedCountry )
-        .sort((f1, f2) => (f2.issueYear ?? 0)  - (f1.issueYear ?? 0)))
+        .sort((f1, f2) =>
+          f1.author === f2.author
+        ? (f1.issueYear ?? 0)  - (f2.issueYear ?? 0)
+        : (f1.author > f2.author) ? 1 : -1
+    ))
     this.searchPattern.patria = ''
     this.searchPattern.issueYear = 0
     this.searchPattern.author = ''
@@ -146,7 +150,10 @@ export class FrancobolliService {
       return
     }
     if (issueYear) this.searchPattern.issueYear = issueYear
-    this.foundItemsSubject.next( this.catalog.filter(item => item.issueYear === this.searchPattern.issueYear ))
+    this.foundItemsSubject.next(
+      this.catalog.filter(item => item.issueYear === this.searchPattern.issueYear )
+      .sort((f1, f2) => (f1.author > f2.author) ? 1 : -1)
+    )
     this.searchPattern.patria = ''
     this.searchPattern.author = ''
     this.searchPattern.issuedCountry = ''
@@ -163,15 +170,18 @@ export class FrancobolliService {
 
   findAuthorsByPatria(patria?: string): void {
     if(!patria && !this.searchPattern.patria) {
-      this.foundItemsSubject.next(this.catalog)
+      // this.foundItemsSubject.next(this.catalog)
       return
     }
     if (patria) this.searchPattern.patria = patria
 
     const authorsFromPatria = this.catalogAuthors.filter(a => a.country === this.searchPattern.patria)
     const stamps = this.catalog.filter(item => authorsFromPatria.find( a => item.author.toLowerCase().includes(a.name.toLowerCase())))
-      .sort((f1, f2) => (f1.issueYear ?? 0)  - (f2.issueYear ?? 0))
-    console.log(stamps)
+      .sort((f1, f2) =>
+        f1.issuedCountry === f2.issuedCountry
+          ? (f1.issueYear ?? 0)  - (f2.issueYear ?? 0)
+          : (f1.issuedCountry > f2.issuedCountry) ? 1 : -1
+      )
     this.foundItemsSubject.next(stamps)
     this.searchPattern.author = ''
     this.searchPattern.issueYear = 0
@@ -218,8 +228,11 @@ export class FrancobolliService {
                 }),
             stampsTotal: 0
           }
+          countryAuthors.stampsTotal = countryAuthors.authorAmount
+            .reduce((acc, a) => acc += a.amount, 0)
           return countryAuthors
         })
+
       continents.push({
         continent, data: countries,
         continentAuthorsTotal: countries.reduce((acc, c) => acc += c.authorAmount.length, 0),
@@ -329,9 +342,38 @@ export class FrancobolliService {
           if (i.issuedCountry) countriesSet.add(i.issuedCountry)
           if (i.issueYear && !this.issueYears.includes(i.issueYear)) this.issueYears.push(i.issueYear)
         })
+
         this.issueYears = this.issueYears.sort()
         this.countries = Array.from(countriesSet).sort()
-        this.foundItemsSubject.next( this.catalog)
+        this.authorTree = this.getContinentsDataVolley()
+
+        this.foundItemsSubject.next(this.catalog)
       })
+  }
+
+  getContinentsDataVolley(): ContinentCountryAuthors[] {
+    const continents: ContinentCountryAuthors[] = []
+    const uniqueContinent = new Set(this.allCountries.filter(c => c.authors).map(c => c.continent))
+
+    uniqueContinent.forEach(continent => {
+      const countries: CountryAuthors[] = this.allCountries.filter(c => c.continent === continent)
+        .map( c => {
+          const countryAuthors : CountryAuthors = {
+            country: c.country,
+            authorAmount: [],
+            stampsTotal: this.catalog.filter(s => s.issuedCountry === c.country ).length
+          }
+          return countryAuthors
+        }).filter( c => c.stampsTotal > 0)
+
+      const contTotal = countries.reduce((acc, c) => acc += c.stampsTotal, 0)
+      if( contTotal > 0 ) continents.push(
+        {
+        continent,
+        data: countries,
+        continentStampsTotal: contTotal
+      })
+    })
+    return continents
   }
 }

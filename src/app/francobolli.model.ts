@@ -89,6 +89,11 @@ export interface CountryAuthors {
   }[];
   stampsTotal: number;
 }
+export const levelFieldNames:  { name: string; count: string}[] = [
+  { name: 'continent', count: 'continentStampsTotal'},
+  { name: 'country', count: 'stampsTotal'},
+  { name: 'author', count: 'amount'},
+]
 
 export const CountriesByContinent: CountriesAndContinent[] = [
   {

@@ -17,17 +17,18 @@ export class ViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.url.subscribe(([url]) => {
-      this.fs.currentCatalogName = ''
       if( url && url.path.includes('volley') ) {
         this.fs.catalogAuthors = []
+        this.fs.searchPattern.author = ''
         this.fs.currentCatalogName = url.path
         this.fs.getOtherCatalog(url.path)
-      } // console.log(path); // e.g. /products// console.log(parameters); // e.g. { id: 'x8klP0' }
+      } else {
+        this.fs.currentCatalogName = ''
+        this.fs.authorTree = []
+        this.fs.getMainCatalog()
+      }
     });
-    this.fs.foundItemsSubject.subscribe(data => {
-      this.viewItems = data
-      // console.log(data)
-    })
+    this.fs.foundItemsSubject.subscribe(data => {this.viewItems = data})
   }
 
   changeFrancobolo(franco: Francobolli) {
