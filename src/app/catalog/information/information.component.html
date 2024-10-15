@@ -19,7 +19,7 @@
                        [searchEnabled]="true" [acceptCustomValue]="false" [showClearButton]="true"
                        [dataSource]="fs.countries"
                        [(value)]="fs.searchPattern.issuedCountry"
-                        (onValueChanged)="fs.findStampsByCountry()"></dx-select-box>
+                        (onSelectionChanged)="fs.findStampsByCountry()"></dx-select-box>
         <dx-select-box #issueYear label="Год выпуска"
                        width="40%"
                        [searchEnabled]="true" [showClearButton]="true"

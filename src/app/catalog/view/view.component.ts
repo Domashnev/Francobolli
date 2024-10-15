@@ -19,6 +19,7 @@ export class ViewComponent implements OnInit {
     this.route.url.subscribe(([url]) => {
       if( url && url.path.includes('volley') ) {
         this.fs.catalogAuthors = []
+        this.fs.authorTree = []
         this.fs.searchPattern.author = ''
         this.fs.currentCatalogName = url.path
         this.fs.getOtherCatalog(url.path)
@@ -28,7 +29,9 @@ export class ViewComponent implements OnInit {
         this.fs.getMainCatalog()
       }
     });
-    this.fs.foundItemsSubject.subscribe(data => {this.viewItems = data})
+    this.fs.foundItemsSubject.subscribe(data => {
+      this.viewItems = data
+    })
   }
 
   changeFrancobolo(franco: Francobolli) {

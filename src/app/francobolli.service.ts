@@ -128,12 +128,13 @@ export class FrancobolliService {
   }
 
   findStampsByCountry(country?: string | string[]): void {
-    if(!country && !this.searchPattern.issuedCountry) {
-      return
-    }
-    if (country && typeof country === 'string') this.searchPattern.issuedCountry =  country
+    if(!country && !this.searchPattern.issuedCountry) { return }
+    if (!country && this.searchPattern.issuedCountry)  country = this.searchPattern.issuedCountry
+
     this.foundItemsSubject.next(
-      this.catalog.filter(item => item.issuedCountry === this.searchPattern.issuedCountry )
+      this.catalog.filter(item => typeof country === 'string'
+          ? item.issuedCountry === country
+          : country?.includes(item.issuedCountry))
         .sort((f1, f2) =>
           f1.author === f2.author
         ? (f1.issueYear ?? 0)  - (f2.issueYear ?? 0)
@@ -145,10 +146,7 @@ export class FrancobolliService {
   }
 
   findStampsByIssueYear( issueYear?: number): void {
-    if( !issueYear && !this.searchPattern.issueYear) {
-      // this.foundItemsSubject.next(this.catalog)
-      return
-    }
+    if ( !issueYear && !this.searchPattern.issueYear) { return }
     if (issueYear) this.searchPattern.issueYear = issueYear
     this.foundItemsSubject.next(
       this.catalog.filter(item => item.issueYear === this.searchPattern.issueYear )
@@ -346,6 +344,7 @@ export class FrancobolliService {
         this.issueYears = this.issueYears.sort()
         this.countries = Array.from(countriesSet).sort()
         this.authorTree = this.getContinentsDataVolley()
+        console.log(this.authorTree)
 
         this.foundItemsSubject.next(this.catalog)
       })
@@ -353,7 +352,8 @@ export class FrancobolliService {
 
   getContinentsDataVolley(): ContinentCountryAuthors[] {
     const continents: ContinentCountryAuthors[] = []
-    const uniqueContinent = new Set(this.allCountries.filter(c => c.authors).map(c => c.continent))
+    this.prepareAllCountries()
+    const uniqueContinent = new Set(this.allCountries.map(c => c.continent))
 
     uniqueContinent.forEach(continent => {
       const countries: CountryAuthors[] = this.allCountries.filter(c => c.continent === continent)

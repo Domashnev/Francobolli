@@ -22,11 +22,15 @@ export class TabsViewComponent implements OnInit {
       this.currentContinent = data.itemData.data
       this.currentCountry = this.fs.currentCatalogName === '' && data.itemData.data.length === 1
         ? this.currentContinent[0].authorAmount : undefined
+      if(this.fs.currentCatalogName !== '') {
+          // this.fs.searchPattern.issuedCountry = data.itemData.continent
+          this.fs.findStampsByCountry(this.currentContinent.map(c => c.country))
+      }
     }
     if( level === 1) {
       if (this.fs.currentCatalogName === ''){
         this.fs.findAuthorsByPatria(data.itemData.country)
-        this.currentCountry= data.itemData.authorAmount
+        this.currentCountry = data.itemData.authorAmount
       } else {
         this.fs.findStampsByCountry(data.itemData.country)
       }
