@@ -194,14 +194,6 @@ export class FrancobolliService {
     return this.http.get(pathToJson)
   }
 
-  getAssetsImageList(): Observable<any> {
-    return this.http.get("assets/imageList.json")
-  }
-
-  getCountries(): string[] {
-    return this.countries
-  }
-
   prepareAllCountries(): void {
     this.allCountries = []
     CountriesByContinent.forEach(cont =>  cont.countries.forEach(country => this.allCountries.push( { id: this.allCountries.length+1, continent: cont.continent, country })))
@@ -331,6 +323,7 @@ export class FrancobolliService {
   }
 
   getOtherCatalog(theme: string): void {
+    this.prepareAllCountries()
     this.firebaseService.getCatalogo(theme)
       .subscribe(data => {
         const countriesSet = new Set<string>()
